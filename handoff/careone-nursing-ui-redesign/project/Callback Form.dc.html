@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="background:#ffffff;border-radius:26px;border:1px solid #E7EEF4;box-shadow:0 24px 56px rgba(20,53,92,.14);padding:38px 36px;display:flex;flex-direction:column;gap:18px;font-family:'Nunito Sans',sans-serif;">
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <span style="font-family:Poppins,sans-serif;font-weight:700;font-size:24px;color:#14355C;">Request a Callback</span>
+    <span style="font-size:14px;color:#6B7A93;">Fill in your details — our care team will call you back shortly.</span>
+  </div>
+  <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#E4F3F2;border:1px solid #BFE0DF;border-radius:16px;padding:22px;display:flex;align-items:center;gap:14px;">
+      <span style="width:44px;height:44px;flex:none;border-radius:50%;background:#0E7C7B;display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <span style="font-family:Poppins,sans-serif;font-weight:600;font-size:16px;color:#14355C;">Request received!</span>
+        <span style="font-size:14px;color:#54617A;">Our team will call you back shortly. For urgent care, call 88385 62250.</span>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:13px;font-weight:700;color:#33415C;">Your Name</label>
+          <input value="{{ name }}" onChange="{{ setName }}" placeholder="Full name" style="border:1.5px solid #D5DEE9;border-radius:12px;padding:13px 16px;font-size:14.5px;font-family:'Nunito Sans',sans-serif;color:#33415C;outline:none;width:100%;" style-focus="border-color:#0E7C7B;box-shadow:0 0 0 3px rgba(14,124,123,.12);">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:13px;font-weight:700;color:#33415C;">Phone Number</label>
+          <input value="{{ phone }}" onChange="{{ setPhone }}" placeholder="10-digit mobile" style="border:1.5px solid #D5DEE9;border-radius:12px;padding:13px 16px;font-size:14.5px;font-family:'Nunito Sans',sans-serif;color:#33415C;outline:none;width:100%;" style-focus="border-color:#0E7C7B;box-shadow:0 0 0 3px rgba(14,124,123,.12);">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:13px;font-weight:700;color:#33415C;">Service Needed</label>
+        <select value="{{ service }}" onChange="{{ setService }}" style="border:1.5px solid #D5DEE9;border-radius:12px;padding:13px 14px;font-size:14.5px;font-family:'Nunito Sans',sans-serif;color:#33415C;outline:none;background:#ffffff;width:100%;">
+          <option value="">Select a service…</option>
+          <option value="Elder Care">Elder Care</option>
+          <option value="Bedridden Patient Care">Bedridden Patient Care</option>
+          <option value="Stroke Patient Care">Stroke Patient Care</option>
+          <option value="Tracheostomy Patient Care">Tracheostomy Patient Care</option>
+          <option value="Post Operative Care">Post Operative Care</option>
+          <option value="Medical Equipment Rental">Medical Equipment Rental</option>
+          <option value="Ambulance Services">Ambulance Services</option>
+          <option value="Palliative Care">Palliative Care</option>
+          <option value="Not sure — need guidance">Not sure — need guidance</option>
+        </select>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:13px;font-weight:700;color:#33415C;">Message (optional)</label>
+        <textarea value="{{ message }}" onChange="{{ setMessage }}" placeholder="Tell us briefly about the patient's condition…" rows="3" style="border:1.5px solid #D5DEE9;border-radius:12px;padding:13px 16px;font-size:14.5px;font-family:'Nunito Sans',sans-serif;color:#33415C;outline:none;resize:vertical;width:100%;" style-focus="border-color:#0E7C7B;box-shadow:0 0 0 3px rgba(14,124,123,.12);"></textarea>
+      </div>
+      <sc-if value="{{ showError }}" hint-placeholder-val="{{ false }}">
+        <span style="font-size:13.5px;color:#C0392B;font-weight:700;">Please enter your name and phone number.</span>
+      </sc-if>
+      <div onClick="{{ submit }}" style="cursor:pointer;background:linear-gradient(135deg,#0E7C7B,#14355C);color:#ffffff;font-family:Poppins,sans-serif;font-weight:600;font-size:15.5px;padding:15px;border-radius:99px;text-align:center;box-shadow:0 10px 24px rgba(14,124,123,.30);" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px rgba(14,124,123,.40);">Request Callback</div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:560,&quot;height&quot;:620}}">
+class Component extends DCLogic {
+  state = { name: '', phone: '', service: '', message: '', sent: false, showError: false };
+
+  renderVals() {
+    return {
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      showError: this.state.showError,
+      name: this.state.name,
+      phone: this.state.phone,
+      service: this.state.service,
+      message: this.state.message,
+      setName: (e) => this.setState({ name: e.target.value }),
+      setPhone: (e) => this.setState({ phone: e.target.value }),
+      setService: (e) => this.setState({ service: e.target.value }),
+      setMessage: (e) => this.setState({ message: e.target.value }),
+      submit: () => {
+        if (!this.state.name.trim() || !this.state.phone.trim()) {
+          this.setState({ showError: true });
+          return;
+        }
+        this.setState({ sent: true, showError: false });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
