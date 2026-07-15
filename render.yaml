@@ -1,0 +1,33 @@
+# Render Blueprint — deploys the CareOne API.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: careone-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 1d
+      - key: ADMIN_SEED_USERNAME
+        sync: false
+      - key: ADMIN_SEED_PASSWORD
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: GOOGLE_PLACE_ID
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false # set to your deployed frontend URL (comma-separate multiple origins)

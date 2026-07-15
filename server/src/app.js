@@ -8,7 +8,18 @@ import { notFoundHandler, errorHandler } from "./middleware/error.middleware.js"
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173" }));
+// Required when hosted behind a reverse proxy (Render, Railway, etc.) so the
+// rate limiter sees each visitor's real IP instead of the proxy's.
+app.set("trust proxy", 1);
+
+// CLIENT_ORIGIN accepts a comma-separated list, e.g.
+// "https://careone.example.com,http://localhost:5173"
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
