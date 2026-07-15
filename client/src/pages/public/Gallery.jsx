@@ -23,7 +23,7 @@ export default function Gallery() {
       <section className="pb-[clamp(48px,6vw,80px)] pt-[clamp(36px,4.5vw,56px)]">
         <Container>
           {loading ? (
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(240px,100%),1fr))] gap-5">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(260px,100%),1fr))] gap-5">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="h-[270px] animate-pulse rounded-2xl bg-field" />
               ))}
@@ -41,19 +41,26 @@ export default function Gallery() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(240px,100%),1fr))] gap-5">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(260px,100%),1fr))] gap-5">
               {images.map((img) => (
-                <div
+                <figure
                   key={img.id}
-                  className="h-[270px] overflow-hidden rounded-2xl shadow-[0_10px_26px_rgba(20,53,92,0.09)]"
+                  className="group overflow-hidden rounded-2xl border border-line bg-white shadow-[0_10px_26px_rgba(20,53,92,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,53,92,0.14)]"
                 >
-                  <img
-                    src={img.imageUrl}
-                    alt={img.title || "CareOne gallery image"}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
+                  <div className="h-[230px] overflow-hidden">
+                    <img
+                      src={img.imageUrl}
+                      alt={img.title || "CareOne gallery image"}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  {img.title && (
+                    <figcaption className="px-4 py-3 font-display text-sm font-medium text-navy">
+                      {img.title}
+                    </figcaption>
+                  )}
+                </figure>
               ))}
             </div>
           )}

@@ -38,7 +38,16 @@ export async function createGalleryImage(req, res, next) {
     const sortOrder = req.body.sortOrder ? Number(req.body.sortOrder) : 0;
     if (!Number.isInteger(sortOrder)) return res.status(400).json({ error: "sortOrder must be an integer" });
 
-    const uploaded = await uploadImage(req.file.buffer);
+    let uploaded;
+    try {
+      uploaded = await uploadImage(req.file.buffer);
+    } catch (err) {
+      // Surface Cloudinary rejections (bad/limited API key, quota, etc.)
+      // instead of a generic 500 — the admin can act on this.
+      const detail = err?.error?.message || err?.message || "unknown error";
+      console.error("Cloudinary upload failed:", detail);
+      return res.status(502).json({ error: `Cloudinary rejected the upload: ${detail}` });
+    }
     const image = await prisma.galleryImage.create({
       data: {
         title: title?.trim() || null,
