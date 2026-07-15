@@ -38,23 +38,52 @@ export async function createRequest(req, res, next) {
   try {
     const { errors, data } = validateEnquiry(req.body);
     if (errors.length) return res.status(400).json({ error: errors[0], errors });
-    const request = await prisma.request.create({ data });
+    const request = await prisma.request.create({ data: { ...data, type: "ENQUIRY" } });
     res.status(201).json(request);
   } catch (err) {
     next(err);
   }
 }
 
-export async function listRequests(req, res, next) {
+// Quick phone-only callback from the "one call away" band — general support,
+// kept separate from the detailed contact-page enquiries.
+export async function createCallback(req, res, next) {
   try {
-    const { status } = req.query;
-    const where = status && STATUSES.includes(status) ? { status } : {};
-    const requests = await prisma.request.findMany({ where, orderBy: { createdAt: "desc" } });
-    res.json(requests);
+    const phone = typeof req.body?.phone === "string" ? req.body.phone.trim() : "";
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      return res.status(400).json({ error: "Phone must be a valid 10-digit Indian mobile number" });
+    }
+    const name = typeof req.body?.name === "string" && req.body.name.trim() ? req.body.name.trim().slice(0, 60) : "Website visitor";
+    const request = await prisma.request.create({
+      data: {
+        name,
+        phone,
+        service: "General Callback",
+        message: `Requested a callback from the "${typeof req.body?.source === "string" ? req.body.source.slice(0, 40) : "one call away"}" section.`,
+        type: "CALLBACK",
+      },
+    });
+    res.status(201).json(request);
   } catch (err) {
     next(err);
   }
 }
+
+function listByType(type) {
+  return async function (req, res, next) {
+    try {
+      const { status } = req.query;
+      const where = { type, ...(status && STATUSES.includes(status) ? { status } : {}) };
+      const requests = await prisma.request.findMany({ where, orderBy: { createdAt: "desc" } });
+      res.json(requests);
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+export const listRequests = listByType("ENQUIRY");
+export const listCallbacks = listByType("CALLBACK");
 
 export async function updateRequestStatus(req, res, next) {
   try {
@@ -86,13 +115,14 @@ export async function deleteRequest(req, res, next) {
 
 export async function getStats(req, res, next) {
   try {
-    const [newCount, totalCount, galleryCount, latest] = await Promise.all([
-      prisma.request.count({ where: { status: "NEW" } }),
-      prisma.request.count(),
+    const [newCount, totalCount, callbackNewCount, galleryCount, latest] = await Promise.all([
+      prisma.request.count({ where: { status: "NEW", type: "ENQUIRY" } }),
+      prisma.request.count({ where: { type: "ENQUIRY" } }),
+      prisma.request.count({ where: { status: "NEW", type: "CALLBACK" } }),
       prisma.galleryImage.count(),
-      prisma.request.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+      prisma.request.findMany({ where: { type: "ENQUIRY" }, orderBy: { createdAt: "desc" }, take: 5 }),
     ]);
-    res.json({ newCount, totalCount, galleryCount, latest });
+    res.json({ newCount, totalCount, callbackNewCount, galleryCount, latest });
   } catch (err) {
     next(err);
   }

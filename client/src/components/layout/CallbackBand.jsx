@@ -18,12 +18,7 @@ export default function CallbackBand() {
     setSubmitting(true);
     setError("");
     try {
-      await api.post("/requests", {
-        name: "Quick callback request",
-        phone: value,
-        service: "Not sure — need guidance",
-        message: "Requested a callback from the website banner.",
-      });
+      await api.post("/callbacks", { phone: value, source: "one call away" });
       setSent(true);
     } catch (err) {
       setError(err.message);

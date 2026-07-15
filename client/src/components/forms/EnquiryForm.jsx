@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, CheckCircle2, X } from "lucide-react";
 import { api } from "../../lib/api";
 import { enquiryServiceOptions } from "../../data/services";
 import { site } from "../../data/site";
@@ -26,6 +26,14 @@ export default function EnquiryForm() {
   const [serverError, setServerError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  // Auto-dismiss the success toast.
+  useEffect(() => {
+    if (!showToast) return;
+    const id = setTimeout(() => setShowToast(false), 5000);
+    return () => clearTimeout(id);
+  }, [showToast]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,6 +56,7 @@ export default function EnquiryForm() {
         message: values.message.trim() || undefined,
       });
       setSent(true);
+      setShowToast(true);
     } catch (err) {
       setServerError(err.message);
     } finally {
@@ -57,6 +66,35 @@ export default function EnquiryForm() {
 
   return (
     <div className="flex flex-col gap-[18px] rounded-[26px] border border-[#E7EEF4] bg-white p-9 shadow-[0_24px_56px_rgba(20,53,92,0.14)] max-sm:p-6">
+      {showToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 right-6 z-[100] w-[min(380px,calc(100vw-32px))] animate-[co-toast-in_0.4s_cubic-bezier(0.22,1,0.36,1)_both] overflow-hidden rounded-2xl border border-[#BFE0DF] bg-white shadow-[0_20px_48px_rgba(20,53,92,0.22)]"
+        >
+          <div className="flex items-start gap-3.5 p-4 pr-3">
+            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[linear-gradient(135deg,#0E7C7B,#2AA7A5)]">
+              <CheckCircle2 className="h-[22px] w-[22px] text-white" strokeWidth={2.2} />
+            </span>
+            <div className="flex min-w-0 flex-col gap-0.5 pt-0.5">
+              <span className="font-display text-[14.5px] font-semibold text-navy">
+                Callback request sent!
+              </span>
+              <span className="text-[13px] leading-[1.55] text-body">
+                Thank you — our care team will call you back shortly.
+              </span>
+            </div>
+            <button
+              onClick={() => setShowToast(false)}
+              aria-label="Dismiss notification"
+              className="ml-auto flex h-7 w-7 flex-none cursor-pointer items-center justify-center rounded-full text-muted transition-colors hover:bg-field hover:text-navy"
+            >
+              <X className="h-4 w-4" strokeWidth={2.2} />
+            </button>
+          </div>
+          <span className="block h-1 animate-[co-toast-bar_5s_linear_both] bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)]" />
+        </div>
+      )}
       <div className="flex flex-col gap-1.5">
         <span className="font-display text-2xl font-bold text-navy">Request a Callback</span>
         <span className="text-sm text-[#6B7A93]">

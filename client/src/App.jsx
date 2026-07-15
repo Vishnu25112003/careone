@@ -11,6 +11,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Login from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import Requests from "./pages/admin/Requests";
+import Callbacks from "./pages/admin/Callbacks";
 import GalleryManager from "./pages/admin/GalleryManager";
 import { isAuthed } from "./lib/auth";
 
@@ -45,6 +46,7 @@ export default function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="requests" element={<Requests />} />
+          <Route path="callbacks" element={<Callbacks />} />
           <Route path="gallery" element={<GalleryManager />} />
         </Route>
       </Routes>

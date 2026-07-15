@@ -2,10 +2,11 @@ import { Phone } from "lucide-react";
 import Container from "../../components/layout/Container";
 import PageBanner from "../../components/ui/PageBanner";
 import EnquiryForm from "../../components/forms/EnquiryForm";
+import Reveal from "../../components/ui/Reveal";
 import { site, telHref, waHref } from "../../data/site";
 
 const cardCls =
-  "flex flex-col gap-3.5 rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,53,92,0.07)]";
+  "flex flex-col gap-3.5 rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,53,92,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-pale hover:shadow-[0_16px_36px_rgba(14,124,123,0.14)]";
 
 export default function Contact() {
   return (
@@ -15,7 +16,7 @@ export default function Contact() {
       {/* Info cards */}
       <section className="mx-auto max-w-[1170px] min-[1600px]:max-w-[1380px] px-6 pt-[clamp(40px,5vw,64px)]">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-[22px]">
-          <div className={cardCls}>
+          <Reveal className={cardCls}>
             <span className="font-display text-[17px] font-semibold text-navy">Contact Info</span>
             <div className="flex flex-col gap-2.5 text-sm leading-[1.6]">
               <div>
@@ -43,9 +44,9 @@ export default function Contact() {
                 </a>
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className={cardCls}>
+          <Reveal delay={110} className={cardCls}>
             <span className="font-display text-[17px] font-semibold text-navy">
               Operating Hours
             </span>
@@ -63,9 +64,9 @@ export default function Contact() {
                 <span className="font-extrabold text-navy">Always open</span>
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className={cardCls}>
+          <Reveal delay={220} className={cardCls}>
             <span className="font-display text-[17px] font-semibold text-navy">Emergency</span>
             <a
               href={telHref}
@@ -77,13 +78,13 @@ export default function Contact() {
             <p className="text-[13.5px] leading-[1.65] text-body">
               For urgent nursing, ambulance or equipment needs — call any time, day or night.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Get in touch */}
       <Container className="grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-start gap-14 pb-[clamp(48px,6vw,80px)] pt-[clamp(40px,5vw,64px)] max-sm:gap-10">
-        <div className="flex flex-col gap-4">
+        <Reveal className="flex flex-col gap-4">
           <h2 className="font-display text-[clamp(24px,4vw,30px)] font-semibold text-navy">
             Get in Touch
           </h2>
@@ -98,8 +99,10 @@ export default function Contact() {
               className="h-full w-full object-cover"
             />
           </div>
-        </div>
-        <EnquiryForm />
+        </Reveal>
+        <Reveal delay={130}>
+          <EnquiryForm />
+        </Reveal>
       </Container>
     </>
   );

@@ -1,10 +1,11 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Inbox, Images, LogOut, ExternalLink, HeartPulse } from "lucide-react";
+import { LayoutDashboard, Inbox, PhoneCall, Images, LogOut, ExternalLink, HeartPulse } from "lucide-react";
 import { clearToken } from "../../lib/auth";
 
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/admin/requests", label: "Requests", icon: Inbox },
+  { to: "/admin/callbacks", label: "Callbacks", icon: PhoneCall },
   { to: "/admin/gallery", label: "Gallery", icon: Images },
 ];
 

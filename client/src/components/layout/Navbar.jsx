@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Phone, Menu } from "lucide-react";
 import Logo from "../ui/Logo";
-import { site, telHref } from "../../data/site";
+import { site } from "../../data/site";
 
 const links = [
   { to: "/", label: "Home" },
@@ -38,13 +38,14 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href={telHref}
+          <Link
+            to="/contact"
+            onClick={() => setOpen(false)}
             className="flex items-center gap-2 whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-[22px] py-[11px] font-display text-[13.5px] font-medium text-white shadow-[0_6px_16px_rgba(14,124,123,0.30)] transition-transform hover:-translate-y-px"
           >
             <Phone className="h-3.5 w-3.5" strokeWidth={2.2} />
             <span className="max-[479px]:hidden">{site.phoneDisplay}</span>
-          </a>
+          </Link>
           <button
             className="flex h-[42px] w-[42px] items-center justify-center rounded-[10px] border-[1.5px] border-[#D7E4EA] bg-white text-navy nav:hidden"
             onClick={() => setOpen((v) => !v)}

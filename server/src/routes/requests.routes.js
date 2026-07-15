@@ -3,7 +3,9 @@ import rateLimit from "express-rate-limit";
 import { requireAuth } from "../middleware/auth.middleware.js";
 import {
   createRequest,
+  createCallback,
   listRequests,
+  listCallbacks,
   updateRequestStatus,
   deleteRequest,
   getStats,
@@ -21,9 +23,11 @@ const enquiryLimiter = rateLimit({
 const router = Router();
 
 router.post("/requests", enquiryLimiter, createRequest);
+router.post("/callbacks", enquiryLimiter, createCallback);
 
 router.get("/admin/stats", requireAuth, getStats);
 router.get("/admin/requests", requireAuth, listRequests);
+router.get("/admin/callbacks", requireAuth, listCallbacks);
 router.patch("/admin/requests/:id", requireAuth, updateRequestStatus);
 router.delete("/admin/requests/:id", requireAuth, deleteRequest);
 

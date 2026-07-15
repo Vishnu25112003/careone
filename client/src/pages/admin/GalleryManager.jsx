@@ -45,9 +45,9 @@ function GalleryItem({ image, onSaved, onDeleted, onError }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
+    <div className="flex h-full min-w-0 flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
       <img src={image.imageUrl} alt={image.title || "Gallery image"} className="aspect-[4/3] w-full object-cover" />
-      <div className="flex flex-col gap-2.5 p-4">
+      <div className="flex flex-1 flex-col gap-2.5 p-4">
         <input
           type="text"
           placeholder="Title"
@@ -55,13 +55,13 @@ function GalleryItem({ image, onSaved, onDeleted, onError }) {
           onChange={(e) => setValues((v) => ({ ...v, title: e.target.value }))}
           className={inputCls}
         />
-        <div className="flex gap-2.5">
+        <div className="flex flex-wrap gap-2.5">
           <input
             type="text"
             placeholder="Category"
             value={values.category}
             onChange={(e) => setValues((v) => ({ ...v, category: e.target.value }))}
-            className={inputCls}
+            className={`${inputCls} min-w-0 flex-1 basis-[130px]`}
           />
           <input
             type="number"
@@ -72,7 +72,7 @@ function GalleryItem({ image, onSaved, onDeleted, onError }) {
             aria-label="Sort order"
           />
         </div>
-        <div className="mt-1 flex items-center justify-between">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1">
           <button
             onClick={handleSave}
             disabled={saving}
@@ -128,7 +128,7 @@ export default function GalleryManager() {
             No images yet. Upload your first image above.
           </p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(250px,100%),1fr))] gap-5 sm:gap-6">
             {images.map((image) => (
               <GalleryItem
                 key={image.id}

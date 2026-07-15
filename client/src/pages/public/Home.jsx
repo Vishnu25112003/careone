@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Stethoscope, Ambulance, HeartPulse } from "lucide-react";
+import { Phone, Stethoscope, Ambulance, HeartPulse, ArrowRight } from "lucide-react";
 import Container from "../../components/layout/Container";
 import DepartmentsPanel from "../../components/ui/DepartmentsPanel";
+import Reveal from "../../components/ui/Reveal";
 import AppointmentForm from "../../components/forms/AppointmentForm";
 import { site, telHref } from "../../data/site";
 import { homeDepartments } from "../../data/services";
@@ -32,7 +33,35 @@ const testimonials = [
     quote:
       "“They arranged a hospital bed and oxygen concentrator within hours, and the night nurse was always alert. Truly dependable service when our family needed it most.”",
   },
+  {
+    name: "Kavitha D.",
+    role: "Mother & Baby Care · Muthialpet",
+    initial: "K",
+    quote:
+      "“As first-time parents we were nervous about everything. The caretaker guided us on feeding, bathing and my recovery with such warmth. It felt like having family by our side.”",
+  },
+  {
+    name: "Prakash S.",
+    role: "Tracheostomy Care · Reddiarpalayam",
+    initial: "P",
+    quote:
+      "“ICU-level suctioning and tube care at home sounded impossible, but their trained nurse handled it confidently every single day. The doctors were impressed at every review.”",
+  },
+  {
+    name: "Meena R.",
+    role: "Physiotherapy · Ariyankuppam",
+    initial: "M",
+    quote:
+      "“After my husband’s stroke, their physiotherapist visited daily and never let him lose hope. Six months later he walks with just a stick. We are forever grateful to CareOne.”",
+  },
 ];
+
+// Testimonial dot strip: at most this many initials visible at once.
+const DOT_LIMIT = 5;
+const DOT_SIZE = 34;
+const DOT_GAP = 8;
+const DOT_STEP = DOT_SIZE + DOT_GAP;
+const AUTO_SWITCH_MS = 5000;
 
 const additionalServices = [
   {
@@ -56,6 +85,21 @@ const additionalServices = [
 export default function Home() {
   const [active, setActive] = useState(0);
   const t = testimonials[active];
+
+  // Auto-switch; the interval restarts whenever `active` changes, so a manual
+  // click also gets a full 5s before the next automatic move.
+  useEffect(() => {
+    const id = setInterval(
+      () => setActive((a) => (a + 1) % testimonials.length),
+      AUTO_SWITCH_MS
+    );
+    return () => clearInterval(id);
+  }, [active]);
+
+  // Sliding window for the initial dots: keep the active dot in view, edges peek.
+  const overflowing = testimonials.length > DOT_LIMIT;
+  const maxOffset = Math.max(0, testimonials.length - DOT_LIMIT);
+  const offset = Math.min(Math.max(active - (DOT_LIMIT - 2), 0), maxOffset);
 
   return (
     <>
@@ -152,7 +196,7 @@ export default function Home() {
       {/* Testimonials */}
       <section className="relative overflow-hidden">
         <Container className="grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-center gap-14 py-[clamp(56px,8vw,96px)] max-sm:gap-10">
-          <div className="flex flex-col gap-5">
+          <Reveal className="flex flex-col gap-5">
             <h2 className="font-display text-[clamp(26px,4.5vw,34px)] font-semibold text-navy">
               Patient's Testimonials
             </h2>
@@ -160,30 +204,67 @@ export default function Home() {
               <svg width="34" height="34" viewBox="0 0 24 24" fill="#BFE3E2" aria-hidden="true">
                 <path d="M11 7H7a4 4 0 0 0-4 4v6h6v-6H6a2 2 0 0 1 2-2h3zm10 0h-4a4 4 0 0 0-4 4v6h6v-6h-3a2 2 0 0 1 2-2h3z" />
               </svg>
-              <p className="text-[15.5px] leading-[1.75] text-body">{t.quote}</p>
-              <div className="flex items-center justify-between gap-3.5">
+              <div key={active} className="co-fade-up flex flex-col gap-3.5">
+                <p className="min-h-[110px] text-[15.5px] leading-[1.75] text-body max-sm:min-h-0">
+                  {t.quote}
+                </p>
                 <div className="flex flex-col leading-[1.3]">
                   <span className="font-display text-[15px] font-semibold text-navy">{t.name}</span>
                   <span className="text-[12.5px] text-muted">{t.role}</span>
                 </div>
-                <div className="flex gap-2">
+              </div>
+              <div className="flex items-center justify-between gap-3.5">
+                {/* Sliding dot strip: shows at most DOT_LIMIT initials; when more
+                    exist the edges fade into a half-hidden peek and the strip
+                    slides to keep the active dot in view. */}
+                <div
+                  className="relative overflow-hidden py-0.5"
+                  style={{
+                    maxWidth: DOT_LIMIT * DOT_SIZE + (DOT_LIMIT - 1) * DOT_GAP + 4,
+                  }}
+                >
+                  <div
+                    className="flex transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    style={{
+                      gap: DOT_GAP,
+                      transform: `translateX(-${offset * DOT_STEP}px)`,
+                    }}
+                  >
+                    {testimonials.map((item, i) => (
+                      <button
+                        key={item.name}
+                        onClick={() => setActive(i)}
+                        aria-label={`Show testimonial from ${item.name}`}
+                        className={`flex flex-none cursor-pointer items-center justify-center rounded-full border-[1.5px] border-[#D7E4EA] font-display text-[13px] font-bold transition-all duration-300 ${
+                          i === active ? "scale-110 bg-teal text-white" : "bg-white text-teal"
+                        }`}
+                        style={{ width: DOT_SIZE, height: DOT_SIZE }}
+                      >
+                        {item.initial}
+                      </button>
+                    ))}
+                  </div>
+                  {overflowing && offset > 0 && (
+                    <span className="pointer-events-none absolute inset-y-0 left-0 w-5 bg-[linear-gradient(90deg,#fff_15%,transparent)]" />
+                  )}
+                  {overflowing && offset < maxOffset && (
+                    <span className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-[linear-gradient(270deg,#fff_15%,transparent)]" />
+                  )}
+                </div>
+                <div className="flex flex-none gap-1.5" aria-hidden="true">
                   {testimonials.map((item, i) => (
-                    <button
-                      key={item.initial}
-                      onClick={() => setActive(i)}
-                      aria-label={`Show testimonial from ${item.name}`}
-                      className={`flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full border-[1.5px] border-[#D7E4EA] font-display text-[13px] font-bold ${
-                        i === active ? "bg-teal text-white" : "bg-white text-teal"
+                    <span
+                      key={item.name}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        i === active ? "w-4 bg-teal" : "w-1.5 bg-[#D7E4EA]"
                       }`}
-                    >
-                      {item.initial}
-                    </button>
+                    />
                   ))}
                 </div>
               </div>
             </div>
-          </div>
-          <div className="relative">
+          </Reveal>
+          <Reveal delay={120} className="relative">
             <div className="absolute -bottom-[46px] -right-[46px] h-[300px] w-[300px] rounded-full bg-[linear-gradient(200deg,#2AA7A5,#0E7C7B)] opacity-[.16]" />
             <div className="relative h-[400px] w-full overflow-hidden rounded-[24px_130px_24px_24px] shadow-[0_22px_48px_rgba(20,53,92,0.16)] max-sm:h-[280px] max-sm:rounded-[20px_80px_20px_20px]">
               <img
@@ -192,35 +273,51 @@ export default function Home() {
                 className="h-full w-full object-cover"
               />
             </div>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
       {/* Additional services */}
       <section className="bg-soft py-[clamp(56px,7vw,80px)]">
         <Container>
-          <h2 className="mb-2 text-center font-display text-[clamp(26px,4vw,32px)] font-semibold text-navy">
-            Additional Services
-          </h2>
-          <p className="mx-auto mb-10 max-w-[520px] text-center text-[15px] text-body">
-            Beyond nursing — everything a home patient needs.
-          </p>
+          <Reveal>
+            <h2 className="mb-2 text-center font-display text-[clamp(26px,4vw,32px)] font-semibold text-navy">
+              Additional Services
+            </h2>
+            <p className="mx-auto mb-10 max-w-[520px] text-center text-[15px] text-body">
+              Beyond nursing — everything a home patient needs.
+            </p>
+          </Reveal>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-[22px]">
-            {additionalServices.map((item) => {
+            {additionalServices.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div
+                <Reveal
                   key={item.name}
-                  className="flex flex-col gap-[11px] rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,53,92,0.06)] transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,53,92,0.12)]"
+                  delay={i * 110}
+                  className="group relative flex flex-col gap-[13px] overflow-hidden rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,53,92,0.06)] transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-pale hover:shadow-[0_20px_44px_rgba(14,124,123,0.16)]"
                 >
-                  <span className="flex h-[50px] w-[50px] items-center justify-center rounded-xl bg-mint text-teal">
+                  {/* Top accent bar sweeps in on hover */}
+                  <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] transition-transform duration-500 group-hover:scale-x-100" />
+                  {/* Decorative corner circle */}
+                  <span className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-mint transition-transform duration-500 group-hover:scale-[1.35]" />
+                  <span className="relative flex h-[54px] w-[54px] items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#0E7C7B,#2AA7A5)] text-white shadow-[0_8px_18px_rgba(14,124,123,0.28)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110">
                     <Icon className="h-6 w-6" strokeWidth={2} />
                   </span>
-                  <span className="font-display text-[17px] font-semibold text-navy">
+                  <span className="relative font-display text-[17px] font-semibold text-navy">
                     {item.name}
                   </span>
-                  <span className="text-sm leading-[1.6] text-body">{item.description}</span>
-                </div>
+                  <span className="relative text-sm leading-[1.6] text-body">
+                    {item.description}
+                  </span>
+                  <Link
+                    to="/contact"
+                    className="relative mt-auto flex w-max items-center gap-1.5 pt-1 font-display text-[13px] font-semibold text-teal transition-all hover:gap-2.5"
+                  >
+                    Enquire Now
+                    <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                  </Link>
+                </Reveal>
               );
             })}
           </div>

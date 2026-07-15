@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Images } from "lucide-react";
 import Container from "../../components/layout/Container";
 import PageBanner from "../../components/ui/PageBanner";
+import Reveal from "../../components/ui/Reveal";
 import { api } from "../../lib/api";
 
 export default function Gallery() {
@@ -42,9 +43,12 @@ export default function Gallery() {
             </div>
           ) : (
             <div className="grid grid-cols-[repeat(auto-fill,minmax(min(260px,100%),1fr))] gap-5">
-              {images.map((img) => (
-                <figure
+              {images.map((img, i) => (
+                <Reveal
                   key={img.id}
+                  as="figure"
+                  delay={(i % 4) * 90}
+                  y={34}
                   className="group overflow-hidden rounded-2xl border border-line bg-white shadow-[0_10px_26px_rgba(20,53,92,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,53,92,0.14)]"
                 >
                   <div className="h-[230px] overflow-hidden">
@@ -60,7 +64,7 @@ export default function Gallery() {
                       {img.title}
                     </figcaption>
                   )}
-                </figure>
+                </Reveal>
               ))}
             </div>
           )}

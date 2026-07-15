@@ -20,12 +20,18 @@ enum RequestStatus {
   CLOSED
 }
 
+enum RequestType {
+  ENQUIRY // detailed request from the contact page form
+  CALLBACK // quick phone-only request from the "one call away" band
+}
+
 model Request {
   id        Int           @id @default(autoincrement())
   name      String
   phone     String
   service   String // one of 5 categories or "Other"
   message   String?
+  type      RequestType   @default(ENQUIRY)
   status    RequestStatus @default(NEW)
   createdAt DateTime      @default(now())
 }

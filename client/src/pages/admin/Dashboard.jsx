@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Inbox, ListChecks, Images, ArrowRight } from "lucide-react";
+import { Inbox, ListChecks, PhoneCall, Images, ArrowRight } from "lucide-react";
 import StatCard from "../../components/admin/StatCard";
 import RequestRow from "../../components/admin/RequestRow";
 import { api } from "../../lib/api";
@@ -25,9 +25,10 @@ export default function Dashboard() {
         <p className="mt-6 rounded-lg bg-maroon/10 px-4 py-3 text-sm font-medium text-maroon">{error}</p>
       )}
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-3">
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="New Requests" value={stats?.newCount} icon={Inbox} accent="teal" />
         <StatCard label="Total Requests" value={stats?.totalCount} icon={ListChecks} accent="navy" />
+        <StatCard label="New Callbacks" value={stats?.callbackNewCount} icon={PhoneCall} accent="teal" />
         <StatCard label="Gallery Images" value={stats?.galleryCount} icon={Images} accent="gold" />
       </div>
 

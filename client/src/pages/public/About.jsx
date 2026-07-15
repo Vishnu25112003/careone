@@ -4,6 +4,7 @@ import Container from "../../components/layout/Container";
 import PageBanner from "../../components/ui/PageBanner";
 import Button from "../../components/ui/Button";
 import ImagePlaceholder from "../../components/ui/ImagePlaceholder";
+import Reveal from "../../components/ui/Reveal";
 
 const faqs = [
   {
@@ -86,13 +87,15 @@ export default function About() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(20,53,92,0.92),rgba(15,40,70,0.88))]" />
         <Container className="relative">
-          <h2 className="mb-10 font-display text-[clamp(26px,4.5vw,34px)] font-semibold max-sm:mb-7">
-            Faq &amp; Stuff
-          </h2>
+          <Reveal>
+            <h2 className="mb-10 font-display text-[clamp(26px,4.5vw,34px)] font-semibold max-sm:mb-7">
+              Faq &amp; Stuff
+            </h2>
+          </Reveal>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-start gap-14 max-sm:gap-10">
             <div className="flex flex-col gap-4">
               {faqs.map((faq, i) => (
-                <div key={faq.q} className="flex flex-col">
+                <Reveal key={faq.q} delay={i * 90} className="flex flex-col">
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
                     aria-expanded={openFaq === i}
@@ -101,32 +104,43 @@ export default function About() {
                     <span className="font-display text-[15.5px] font-medium text-white">
                       {faq.q}
                     </span>
-                    <span className="font-display text-lg font-bold text-white">
-                      {openFaq === i ? "–" : "+"}
+                    <span
+                      className={`font-display text-lg font-bold text-white transition-transform duration-300 ${
+                        openFaq === i ? "rotate-45" : ""
+                      }`}
+                    >
+                      +
                     </span>
                   </button>
-                  {openFaq === i && (
-                    <p className="px-1 pb-1.5 pt-[18px] text-[14.5px] leading-[1.8] text-[#C7D3E4]">
-                      {faq.a}
-                    </p>
-                  )}
-                </div>
+                  <div
+                    className={`grid transition-[grid-template-rows,opacity] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      openFaq === i ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="px-1 pb-1.5 pt-[18px] text-[14.5px] leading-[1.8] text-[#C7D3E4]">
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
             <div className="grid grid-cols-2 gap-[22px] max-sm:grid-cols-1">
-              {pillars.map((pillar) => {
+              {pillars.map((pillar, i) => {
                 const Icon = pillar.icon;
                 return (
-                  <div
+                  <Reveal
                     key={pillar.label}
-                    className="relative mt-[22px] flex flex-col items-center gap-[18px] rounded-[14px] border-[1.5px] border-white/85 px-[22px] pb-[30px] pt-11 text-center"
+                    delay={150 + i * 130}
+                    className="relative mt-[22px] flex flex-col items-center gap-[18px] rounded-[14px] border-[1.5px] border-white/85 px-[22px] pb-[30px] pt-11 text-center transition-colors duration-300 hover:bg-white/[.06]"
                   >
                     <span className="absolute -top-[22px] left-[18px] bg-white px-[18px] py-2 font-display text-[17px] font-semibold text-navy">
                       {pillar.label}
                     </span>
                     <Icon className="h-[46px] w-[46px] text-white" strokeWidth={1.4} />
                     <p className="text-[13.5px] leading-[1.8] text-[#C7D3E4]">{pillar.text}</p>
-                  </div>
+                  </Reveal>
                 );
               })}
             </div>
