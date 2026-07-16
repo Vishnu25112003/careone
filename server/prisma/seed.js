@@ -12,15 +12,19 @@ if (!password) {
   process.exit(1);
 }
 
-const hash = await bcrypt.hash(password, 10);
+// Keep the admin credentials in sync with the env vars: creating the
+// user on first run, and rehashing only when the password actually changed.
+const existing = await prisma.admin.findUnique({ where: { username } });
 
-// Upsert with empty update: never overwrites a password the admin
-// may have changed after first login.
-await prisma.admin.upsert({
-  where: { username },
-  update: {},
-  create: { username, password: hash },
-});
-
-console.log(`Admin user "${username}" is ready.`);
+if (!existing) {
+  const hash = await bcrypt.hash(password, 10);
+  await prisma.admin.create({ data: { username, password: hash } });
+  console.log(`Admin user "${username}" created.`);
+} else if (await bcrypt.compare(password, existing.password)) {
+  console.log(`Admin user "${username}" is ready (password unchanged).`);
+} else {
+  const hash = await bcrypt.hash(password, 10);
+  await prisma.admin.update({ where: { username }, data: { password: hash } });
+  console.log(`Admin user "${username}" password updated from env.`);
+}
 await prisma.$disconnect();
