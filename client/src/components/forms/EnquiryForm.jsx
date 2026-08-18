@@ -7,7 +7,7 @@ import { site } from "../../data/site";
 const initial = { name: "", phone: "", service: "", message: "" };
 
 const inputCls =
-  "w-full rounded-xl border-[1.5px] border-[#D5DEE9] px-4 py-[13px] text-[14.5px] text-ink outline-none transition focus:border-teal focus:shadow-[0_0_0_3px_rgba(14,124,123,0.12)]";
+  "w-full rounded-xl border-[1.5px] border-[#D5DEE9] px-4 py-[13px] text-[14.5px] text-ink outline-none transition focus:border-teal focus:shadow-[0_0_0_3px_rgba(27,116,183,0.12)]";
 
 function validate(values) {
   const errors = {};
@@ -65,15 +65,15 @@ export default function EnquiryForm() {
   }
 
   return (
-    <div className="flex flex-col gap-[18px] rounded-[26px] border border-[#E7EEF4] bg-white p-9 shadow-[0_24px_56px_rgba(20,53,92,0.14)] max-sm:p-6">
+    <div className="flex flex-col gap-[18px] rounded-[26px] border border-[#E7EEF4] bg-white p-9 shadow-[0_24px_56px_rgba(20,51,102,0.14)] max-sm:p-6">
       {showToast && (
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-6 right-6 z-[100] w-[min(380px,calc(100vw-32px))] animate-[co-toast-in_0.4s_cubic-bezier(0.22,1,0.36,1)_both] overflow-hidden rounded-2xl border border-[#BFE0DF] bg-white shadow-[0_20px_48px_rgba(20,53,92,0.22)]"
+          className="fixed bottom-6 right-6 z-[100] w-[min(380px,calc(100vw-32px))] animate-[co-toast-in_0.4s_cubic-bezier(0.22,1,0.36,1)_both] overflow-hidden rounded-2xl border border-[#C0DDF0] bg-white shadow-[0_20px_48px_rgba(20,51,102,0.22)]"
         >
           <div className="flex items-start gap-3.5 p-4 pr-3">
-            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[linear-gradient(135deg,#0E7C7B,#2AA7A5)]">
+            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[linear-gradient(135deg,#1B74B7,#3FA0D8)]">
               <CheckCircle2 className="h-[22px] w-[22px] text-white" strokeWidth={2.2} />
             </span>
             <div className="flex min-w-0 flex-col gap-0.5 pt-0.5">
@@ -92,7 +92,7 @@ export default function EnquiryForm() {
               <X className="h-4 w-4" strokeWidth={2.2} />
             </button>
           </div>
-          <span className="block h-1 animate-[co-toast-bar_5s_linear_both] bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)]" />
+          <span className="block h-1 animate-[co-toast-bar_5s_linear_both] bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)]" />
         </div>
       )}
       <div className="flex flex-col gap-1.5">
@@ -103,7 +103,7 @@ export default function EnquiryForm() {
       </div>
 
       {sent ? (
-        <div className="flex items-center gap-3.5 rounded-2xl border border-[#BFE0DF] bg-[#E4F3F2] p-[22px]">
+        <div className="flex items-center gap-3.5 rounded-2xl border border-[#C0DDF0] bg-[#E5F2FA] p-[22px]">
           <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-teal">
             <Check className="h-[22px] w-[22px] text-white" strokeWidth={3} />
           </span>
@@ -197,7 +197,7 @@ export default function EnquiryForm() {
           <button
             type="submit"
             disabled={submitting}
-            className="cursor-pointer rounded-full bg-[linear-gradient(135deg,#0E7C7B,#14355C)] p-[15px] text-center font-display text-[15.5px] font-semibold text-white shadow-[0_10px_24px_rgba(14,124,123,0.30)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(14,124,123,0.40)] disabled:cursor-not-allowed disabled:opacity-60"
+            className="cursor-pointer rounded-full bg-[linear-gradient(135deg,#1B74B7,#143366)] p-[15px] text-center font-display text-[15.5px] font-semibold text-white shadow-[0_10px_24px_rgba(27,116,183,0.30)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(27,116,183,0.40)] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Sending…" : "Request Callback"}
           </button>

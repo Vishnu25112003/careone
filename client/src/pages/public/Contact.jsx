@@ -3,10 +3,10 @@ import Container from "../../components/layout/Container";
 import PageBanner from "../../components/ui/PageBanner";
 import EnquiryForm from "../../components/forms/EnquiryForm";
 import Reveal from "../../components/ui/Reveal";
-import { site, telHref, waHref } from "../../data/site";
+import { site, telHref, waHref, mailHref } from "../../data/site";
 
 const cardCls =
-  "flex flex-col gap-3.5 rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,53,92,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-pale hover:shadow-[0_16px_36px_rgba(14,124,123,0.14)]";
+  "flex flex-col gap-3.5 rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,51,102,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-pale hover:shadow-[0_16px_36px_rgba(27,116,183,0.14)]";
 
 export default function Contact() {
   return (
@@ -43,6 +43,13 @@ export default function Contact() {
                   Chat with us
                 </a>
               </div>
+              <div>
+                <span className="font-extrabold text-ink">Email:</span>
+                <br />
+                <a href={mailHref} className="font-bold text-teal">
+                  {site.email}
+                </a>
+              </div>
             </div>
           </Reveal>
 
@@ -67,16 +74,18 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={220} className={cardCls}>
-            <span className="font-display text-[17px] font-semibold text-navy">Emergency</span>
+            <span className="font-display text-[17px] font-semibold text-navy">
+              Care services available at this number
+            </span>
             <a
               href={telHref}
-              className="flex w-max items-center gap-[9px] rounded-full bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-[22px] py-3 font-display text-[15.5px] font-semibold text-white shadow-[0_8px_18px_rgba(14,124,123,0.28)] transition-transform hover:-translate-y-px"
+              className="flex w-max items-center gap-[9px] rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[22px] py-3 font-display text-[15.5px] font-semibold text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)] transition-transform hover:-translate-y-px"
             >
               <Phone className="h-[15px] w-[15px]" strokeWidth={2.2} />
               +91 {site.phoneDisplay}
             </a>
             <p className="text-[13.5px] leading-[1.65] text-body">
-              For urgent nursing, ambulance or equipment needs — call any time, day or night.
+              Speak directly with our care team — any time of day, any day of the year.
             </p>
           </Reveal>
         </div>
@@ -92,7 +101,7 @@ export default function Contact() {
             Tell us what you need and our care team will call you back to plan the right care for
             your loved one. No obligation — just honest guidance.
           </p>
-          <div className="mt-2 h-[300px] w-full overflow-hidden rounded-2xl shadow-[0_14px_34px_rgba(20,53,92,0.10)] max-sm:h-[220px]">
+          <div className="mt-2 h-[300px] w-full overflow-hidden rounded-2xl shadow-[0_14px_34px_rgba(20,51,102,0.10)] max-sm:h-[220px]">
             <img
               src="/images/get-in-touch.jpg"
               alt={`CareOne — serving ${site.area}`}

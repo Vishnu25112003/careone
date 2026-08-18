@@ -5,21 +5,21 @@ import {
   Wind,
   Syringe,
   Stethoscope,
-  Ambulance,
   HeartPulse,
 } from "lucide-react";
 
-// The 8 departments from the v2 design. `short` feeds the department grids,
+// The 7 departments from the v2 design. `short` feeds the department grids,
 // `long` + `points` feed the tabbed service detail on the Services page.
 export const departments = [
   {
-    slug: "elder-care",
+    slug: "supportive-management",
+    // Photo is still named for the department's old title; the picture itself fits.
     image: "/images/services/elder-care.avif",
-    name: "Elder Care",
+    name: "Supportive Management",
     icon: Heart,
-    short: "Daily living support, companionship and medication reminders for seniors at home.",
-    long: "Our trained caregivers support elders with everyday living — bathing, mobility, meals and medication reminders — while keeping families informed at every step. From gentle companionship to careful patient monitoring, we make sure your loved ones are never alone and always cared for with dignity.",
-    points: "Daily living support · Companionship · Medication reminders · Monitoring",
+    short: "Coordinated day-to-day support and care management for patients at home.",
+    long: "Supportive management brings structure to everyday care. Our caregivers handle daily living support — bathing, mobility, meals and medication reminders — while our care team coordinates the wider plan: tracking vitals, watching for changes and keeping the family informed at every step. It is steady, organised support that keeps your loved one comfortable, safe and never alone.",
+    points: "Daily living support · Medication management · Care coordination · Monitoring",
   },
   {
     slug: "bedridden-patient-care",
@@ -65,15 +65,6 @@ export const departments = [
     short: "Hospital equipment delivered and installed at home.",
     long: "We deliver and set up hospital-grade equipment at your home, ready when you need it — oxygen concentrators, hospital beds, wheelchairs and suction machines — with guidance on safe use for the whole family.",
     points: "Oxygen concentrators · Hospital beds · Wheelchairs · Suction machines",
-  },
-  {
-    slug: "ambulance-services",
-    image: "/images/services/ambulance-services.jpg",
-    name: "Ambulance Services",
-    icon: Ambulance,
-    short: "24/7 ambulance support for emergencies and transfers.",
-    long: "Emergencies don’t wait, and neither do we. Our ambulance support is available 24/7 for emergencies and safe, comfortable hospital transfers — coordinated end-to-end by our care team.",
-    points: "Emergency response · Hospital transfers · Round the clock",
   },
   {
     slug: "palliative-care",

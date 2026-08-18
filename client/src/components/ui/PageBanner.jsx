@@ -22,12 +22,12 @@ export default function PageBanner({ title, crumb, image, imageAlt = "" }) {
         </div>
         {image && (
           <div className="relative flex-none max-sm:hidden">
-            <div className="absolute -left-5 -top-4 h-[45%] w-[45%] rounded-full bg-[linear-gradient(200deg,#BFE3E2,#7FC9C7)]" />
-            <div className="absolute -bottom-4 -right-5 h-[52%] w-[52%] rounded-full bg-[linear-gradient(200deg,#2AA7A5,#0E7C7B)]" />
+            <div className="absolute -left-5 -top-4 h-[45%] w-[45%] rounded-full bg-[linear-gradient(200deg,#C0E0F5,#89C4E3)]" />
+            <div className="absolute -bottom-4 -right-5 h-[52%] w-[52%] rounded-full bg-[linear-gradient(200deg,#3FA0D8,#1B74B7)]" />
             <img
               src={image}
               alt={imageAlt}
-              className="relative h-[min(18vw,190px)] w-[min(18vw,190px)] rounded-full border-4 border-white object-cover shadow-[0_16px_36px_rgba(20,53,92,0.18)]"
+              className="relative h-[min(18vw,190px)] w-[min(18vw,190px)] rounded-full border-4 border-white object-cover shadow-[0_16px_36px_rgba(20,51,102,0.18)]"
             />
           </div>
         )}

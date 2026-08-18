@@ -5,7 +5,7 @@ import Reveal from "./Reveal";
 // Services shows all eight without them.
 export default function DepartmentsPanel({ items, subtitle, readMore = false }) {
   return (
-    <div className="bg-[linear-gradient(140deg,#2AA7A5_0%,#0E7C7B_35%,#14355C_100%)] p-[clamp(26px,4vw,44px)] px-[clamp(20px,3.5vw,40px)] text-white shadow-[0_20px_48px_rgba(14,124,123,0.26)]">
+    <div className="bg-[linear-gradient(140deg,#3FA0D8_0%,#1B74B7_35%,#143366_100%)] p-[clamp(26px,4vw,44px)] px-[clamp(20px,3.5vw,40px)] text-white shadow-[0_20px_48px_rgba(27,116,183,0.26)]">
       <Reveal>
         <h2 className="mb-2 text-center font-display text-[clamp(24px,3.5vw,28px)] font-semibold">
           Our Departments

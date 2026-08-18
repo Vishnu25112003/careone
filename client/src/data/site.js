@@ -6,6 +6,7 @@ export const site = {
   phone: "8838562250",
   phoneDisplay: "88385 62250",
   whatsapp: "918838562250",
+  email: "care@careonenursing.in",
   domain: "careonenursing.in",
   area: "Pondicherry & Surrounding Areas",
   hours: "24/7",
@@ -17,6 +18,8 @@ export const site = {
 };
 
 export const telHref = `tel:+91${site.phone}`;
+
+export const mailHref = `mailto:${site.email}`;
 
 export const waHref = (text = "") =>
   `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;

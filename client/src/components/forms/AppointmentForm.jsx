@@ -96,7 +96,7 @@ export default function AppointmentForm() {
         <button
           onClick={submit}
           disabled={submitting}
-          className="cursor-pointer whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-[30px] py-[13px] font-display text-sm font-medium text-white shadow-[0_8px_18px_rgba(14,124,123,0.28)] transition-transform hover:-translate-y-px disabled:opacity-60"
+          className="cursor-pointer whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[30px] py-[13px] font-display text-sm font-medium text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)] transition-transform hover:-translate-y-px disabled:opacity-60"
         >
           {submitting ? "Sending…" : "Book Appointment"}
         </button>

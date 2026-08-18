@@ -1,25 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  /* CareOne v2 palette (from the Claude Design handoff) */
-  --color-teal: #0e7c7b;
-  --color-teal-light: #2aa7a5;
-  --color-teal-pale: #bfe3e2;
-  --color-mint: #eaf6f5;
-  --color-navy: #14355c;
-  --color-navy-deep: #0f2846;
+  /* CareOne v3 palette — derived from the blue logo mark.
+     Token names are unchanged from the teal era; the values are now the
+     logo's sky-blue + deep-navy, luminance-matched to the colours they replaced. */
+  --color-teal: #1b74b7;
+  --color-teal-light: #3fa0d8;
+  --color-teal-pale: #c0e0f5;
+  --color-mint: #ebf5fc;
+  --color-navy: #143366;
+  --color-navy-deep: #0e2651;
   --color-ink: #33415c;
   --color-body: #5e6c86;
   --color-muted: #8a97ac;
   --color-line: #e8eef5;
   --color-line-2: #e3eaf2;
-  --color-soft: #f2f8fa;
+  --color-soft: #f2f7fc;
   --color-field: #f2f6fa;
   --color-footer: #f4f8fb;
 
   /* Legacy tokens still referenced by the admin panel */
-  --color-teal-dark: #0a5f5e;
-  --color-navy-dark: #0f2846;
+  --color-teal-dark: #125793;
+  --color-navy-dark: #0e2651;
   --color-maroon: #6e1e32;
   --color-gold: #c9a24b;
 
@@ -29,6 +31,7 @@
   /* Mobile nav switches at 860px, matching the design */
   --breakpoint-nav: 53.75rem;
 }
+
 
 html {
   scroll-behavior: smooth;

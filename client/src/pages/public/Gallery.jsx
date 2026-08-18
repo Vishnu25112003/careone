@@ -49,7 +49,7 @@ export default function Gallery() {
                   as="figure"
                   delay={(i % 4) * 90}
                   y={34}
-                  className="group overflow-hidden rounded-2xl border border-line bg-white shadow-[0_10px_26px_rgba(20,53,92,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,53,92,0.14)]"
+                  className="group overflow-hidden rounded-2xl border border-line bg-white shadow-[0_10px_26px_rgba(20,51,102,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,51,102,0.14)]"
                 >
                   <div className="h-[230px] overflow-hidden">
                     <img

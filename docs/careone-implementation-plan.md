@@ -42,7 +42,7 @@ This started as a static site plan, but was upgraded to full-stack because:
 | Service area      | Pondicherry & Surrounding Areas (NO street address shown)  |
 | Operating hours   | 24/7                                                       |
 | Language          | English only                                               |
-| Email             | NONE — email removed entirely from all flows               |
+| Email             | `care@careonenursing.in` — published on Contact page + footer. WhatsApp remains the primary follow-up channel. |
 | Logo              | Provided by Dev4 during development (Phase 1). Placeholder until then. |
 | Photos            | Provided by Dev4 later. Clean placeholders until then.     |
 | Social media      | Placeholder icons with `#` links. Real URLs swapped in later. |
@@ -51,17 +51,31 @@ This started as a static site plan, but was upgraded to full-stack because:
 
 ## 3. COLOR SYSTEM (Tailwind tokens)
 
-| Token   | Hex       | Usage                                              |
-| ------- | --------- | -------------------------------------------------- |
-| teal    | `#0E7C7B` | Primary — headings, icon circles, buttons, links   |
-| navy    | `#1B2A5B` | Navbar, footer, service titles, dark sections      |
-| maroon  | `#6E1E32` | Accent — "We Care Like Family" band, emphasis only |
-| gold    | `#C9A24B` | Thin dividers, small accents, subtle highlights    |
-| soft    | `#F5F8F8` | Alternate section backgrounds                      |
-| slate   | `#334155` | Body text                                          |
-| white   | `#FFFFFF` | Base background                                    |
+Source of truth is the `@theme {}` block in `client/src/index.css` (Tailwind v4,
+CSS-first — there is no `tailwind.config.js`). Values below are the v3 palette,
+derived from the blue logo mark; the token names still read `teal` for historical
+reasons but now hold the logo's sky blue.
 
-Rule: maroon and gold are used **sparingly**. Teal + navy carry the site.
+| Token      | Hex       | Usage                                              |
+| ---------- | --------- | -------------------------------------------------- |
+| teal       | `#1B74B7` | Primary — headings, icon circles, buttons, links   |
+| teal-light | `#3FA0D8` | Second stop of the signature CTA gradient          |
+| teal-pale  | `#C0E0F5` | Tints — banner rings, decorative blobs             |
+| mint       | `#EBF5FC` | Lightest brand tint                                |
+| navy       | `#143366` | Navbar, footer, service titles, dark sections      |
+| navy-deep  | `#0E2651` | Deepest navy — hero scrims                         |
+| maroon     | `#6E1E32` | Legacy accent — admin panel status chips only      |
+| gold       | `#C9A24B` | Legacy accent — admin panel badges only            |
+| soft       | `#F2F7FC` | Alternate section backgrounds                      |
+| ink        | `#33415C` | Strong body text                                   |
+| body       | `#5E6C86` | Body text                                          |
+| white      | `#FFFFFF` | Base background                                    |
+
+Shadows and scrims are built from two rgba bases: `rgba(27,116,183,α)` (blue) and
+`rgba(20,51,102,α)` (navy).
+
+Rule: maroon and gold are **admin-only** and never appear on the public site.
+Blue + navy carry the site.
 
 ---
 
@@ -76,7 +90,7 @@ Rule: maroon and gold are used **sparingly**. Teal + navy carry the site.
 | Auth             | JWT (single admin), bcrypt password hashing          |
 | Image storage    | Cloudinary (gallery uploads)                         |
 | Reviews          | Google Places API → cached in PostgreSQL             |
-| Enquiry follow-up| WhatsApp deep links only (`wa.me`). NO email/EmailJS |
+| Enquiry follow-up| WhatsApp deep links only (`wa.me`). No transactional email/EmailJS — the published address is for inbound contact only. |
 
 ---
 
@@ -258,28 +272,36 @@ after first login. No registration route exists anywhere.
 
 ## 8. SERVICES DATA (CONFIRMED MAPPING)
 
-### 8.1 Main categories (5) — icon circle cards, form dropdown values
+### 8.1 Departments (7) — source of truth is `client/src/data/services.js`
 
-| # | Category                  | Sub-services (from flyer)                                              |
+| # | Department                | Sub-services                                                             |
 | - | ------------------------- | ---------------------------------------------------------------------- |
-| 1 | Elder Care                | Daily living support · Companionship · Medication reminders · Patient monitoring |
+| 1 | Supportive Management     | Daily living support · Medication management · Care coordination · Monitoring |
 | 2 | Bedridden Patient Care    | Bed sore management · Catheterization · Ryles tube insertion · Hygiene & repositioning |
 | 3 | Stroke Patient Care       | Physiotherapy at home · Rehab & mobility support · Vitals monitoring   |
 | 4 | Tracheostomy Patient Care | Airway management · Suctioning · Infection prevention · ICU care at home |
 | 5 | Post Operative Care       | Wound dressing · Injections & IV therapy · Doctor visits · Recovery monitoring |
+| 6 | Medical Equipment Rental  | Oxygen concentrators · Hospital beds · Wheelchairs · Suction machines  |
+| 7 | Palliative Care           | Pain management · Comfort care · Family support                        |
 
 **Baby Care: EXCLUDED (Dev4 decision).**
+**Ambulance Services: REMOVED (Dev4 decision, 2026-08-18).**
+**Elder Care: renamed to Supportive Management (Dev4 decision, 2026-08-18).**
 
-### 8.2 Additional Services strip (standalone, not in dropdown)
+### 8.2 Additional Services strip on the home page
 
 - Medical Equipment Rental (oxygen concentrators, hospital beds, wheelchairs, suction machines)
-- Ambulance Services (24/7)
 - Palliative Care
 
-### 8.3 Enquiry form dropdown values (6)
+Note this strip is hardcoded in `client/src/pages/public/Home.jsx`, duplicating
+copy that also lives in `services.js`.
 
-`Elder Care` · `Bedridden Patient Care` · `Stroke Patient Care` ·
-`Tracheostomy Patient Care` · `Post Operative Care` · `Other`
+### 8.3 Enquiry form dropdown values (8)
+
+Derived in code as `enquiryServiceOptions` = the 7 department names +
+`Not sure — need guidance`. **The server duplicates this list as `SERVICE_OPTIONS`
+in `server/src/controllers/requests.controller.js` (plus `Other`) and nothing
+enforces the sync — change both together or enquiries 400.**
 
 ---
 
@@ -375,7 +397,8 @@ Route base: `/admin` (all protected except login).
   Prefilled: "Hello <name>, this is CareOne Nursing Services regarding your
   <service> request."
 - Delete with confirm dialog
-- **No email anywhere.**
+- **No outbound email from the admin panel** — follow-up is WhatsApp/phone only.
+  (`care@careonenursing.in` is published on the public site for inbound contact.)
 
 ### 10.4 Gallery Manager (`/admin/gallery`)
 
@@ -503,7 +526,8 @@ Client `.env`: `VITE_API_URL=http://localhost:5000/api`
 
 1. Stack: React + Vite + Tailwind / Node + Express / **PostgreSQL + Prisma** / Cloudinary
 2. Language: English only
-3. Email: **removed completely** — WhatsApp-only follow-up
+3. Email: `care@careonenursing.in` published on the public site (Contact card + footer);
+   follow-up from the admin panel is still WhatsApp-only
 4. Enquiry requests: stored in DB, monitored in admin
 5. Admin: single user, **seed-file based**, JWT auth, no settings page
 6. Reviews: **fetched from Google** (Places API) with server-side 6h cache
@@ -511,11 +535,11 @@ Client `.env`: `VITE_API_URL=http://localhost:5000/api`
 8. Layout: **hybrid** — long-scroll Home + dedicated About/Services/Gallery/Contact
 9. Service cards: **icon circles (flyer style)** — not photo cards
 10. Services: **5 main categories + flyer items as sub-services**; Baby Care excluded
-11. Additional Services strip: Equipment Rental · Ambulance · Palliative Care
-12. Form dropdown: 5 categories + "Other"
+11. Additional Services strip: Equipment Rental · Palliative Care
+12. Form dropdown: 7 departments + "Not sure — need guidance"
 13. Address shown: **"Pondicherry & Surrounding Areas" only** — no street address
 14. Hours: 24/7
-15. Colors: teal `#0E7C7B` · navy `#1B2A5B` · maroon `#6E1E32` · gold `#C9A24B`
+15. Colors: blue `#1B74B7` · navy `#143366` · maroon `#6E1E32` (admin) · gold `#C9A24B` (admin)
 
 ---
 

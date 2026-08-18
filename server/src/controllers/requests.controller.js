@@ -1,13 +1,15 @@
 import { prisma } from "../lib/prisma.js";
 
+// Must stay in sync with `enquiryServiceOptions` in client/src/data/services.js
+// (that list is the department names + "Not sure — need guidance"; "Other" is
+// accepted here but not currently offered by the client).
 const SERVICE_OPTIONS = [
-  "Elder Care",
+  "Supportive Management",
   "Bedridden Patient Care",
   "Stroke Patient Care",
   "Tracheostomy Patient Care",
   "Post Operative Care",
   "Medical Equipment Rental",
-  "Ambulance Services",
   "Palliative Care",
   "Not sure — need guidance",
   "Other",

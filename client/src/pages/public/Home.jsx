@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Stethoscope, Ambulance, HeartPulse, ArrowRight } from "lucide-react";
+import { Phone, Stethoscope, HeartPulse, ArrowRight } from "lucide-react";
 import Container from "../../components/layout/Container";
 import DepartmentsPanel from "../../components/ui/DepartmentsPanel";
 import Reveal from "../../components/ui/Reveal";
@@ -9,12 +9,12 @@ import { site, telHref } from "../../data/site";
 import { homeDepartments } from "../../data/services";
 
 const cardCls =
-  "rounded-2xl border border-line bg-white p-7 px-[30px] shadow-[0_14px_36px_rgba(20,53,92,0.10)] flex flex-col gap-3.5";
+  "rounded-2xl border border-line bg-white p-7 px-[30px] shadow-[0_14px_36px_rgba(20,51,102,0.10)] flex flex-col gap-3.5";
 
 const testimonials = [
   {
     name: "Ramesh K.",
-    role: "Elder Care · Pondicherry",
+    role: "Supportive Management · Pondicherry",
     initial: "R",
     quote:
       "“The nurse who cared for my father treated him like her own family. Medication, hygiene, everything was handled with so much patience. We finally felt we were not alone in this.”",
@@ -71,11 +71,6 @@ const additionalServices = [
       "Oxygen concentrators, hospital beds, wheelchairs & suction machines delivered to your home.",
   },
   {
-    name: "Ambulance Services",
-    icon: Ambulance,
-    description: "24/7 ambulance support for emergencies and safe hospital transfers.",
-  },
-  {
     name: "Palliative Care",
     icon: HeartPulse,
     description: "Comfort-focused care for patients living with serious illness.",
@@ -118,7 +113,7 @@ export default function Home() {
             <div className="mt-1 flex flex-wrap gap-3.5 max-sm:flex-col max-sm:items-stretch max-sm:text-center">
               <Link
                 to="/contact"
-                className="whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-8 py-[13px] font-display text-[14.5px] font-medium text-white shadow-[0_10px_22px_rgba(14,124,123,0.32)] transition-transform hover:-translate-y-0.5"
+                className="whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-8 py-[13px] font-display text-[14.5px] font-medium text-white shadow-[0_10px_22px_rgba(27,116,183,0.32)] transition-transform hover:-translate-y-0.5"
               >
                 Book a Nurse
               </Link>
@@ -131,18 +126,18 @@ export default function Home() {
             </div>
           </div>
           <div className="relative mx-auto aspect-square w-full max-w-[440px] max-md:max-w-[320px]">
-            <div className="absolute -left-7 -top-6 h-[58%] w-[58%] rounded-full bg-[linear-gradient(200deg,#BFE3E2,#7FC9C7)]" />
-            <div className="absolute -bottom-6 -right-5 h-[54%] w-[54%] rounded-full bg-[linear-gradient(200deg,#2AA7A5,#0E7C7B)]" />
+            <div className="absolute -left-7 -top-6 h-[58%] w-[58%] rounded-full bg-[linear-gradient(200deg,#C0E0F5,#89C4E3)]" />
+            <div className="absolute -bottom-6 -right-5 h-[54%] w-[54%] rounded-full bg-[linear-gradient(200deg,#3FA0D8,#1B74B7)]" />
             <img
               src="/images/hero-home.jpg"
               alt="CareOne nurse caring for a patient at home"
-              className="relative h-full w-full rounded-full border-[6px] border-white object-cover shadow-[0_28px_60px_rgba(20,53,92,0.22)]"
+              className="relative h-full w-full rounded-full border-[6px] border-white object-cover shadow-[0_28px_60px_rgba(20,51,102,0.22)]"
             />
           </div>
         </Container>
       </section>
 
-      {/* Hours / Emergency / Appointment overlap cards */}
+      {/* Hours / Care-services / Appointment overlap cards */}
       <section className="relative z-[5] mx-auto -mt-16 max-w-[1170px] min-[1600px]:max-w-[1380px] px-6">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(270px,100%),1fr))] gap-[22px]">
           <div className={cardCls}>
@@ -163,17 +158,18 @@ export default function Home() {
             </div>
           </div>
           <div className={cardCls}>
-            <span className="font-display text-lg font-semibold text-navy">Emergency</span>
+            <span className="font-display text-lg font-semibold text-navy">
+              Care services available at this number
+            </span>
             <a
               href={telHref}
-              className="flex w-max items-center gap-2.5 rounded-full bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-[26px] py-[13px] font-display text-[17px] font-semibold text-white shadow-[0_8px_20px_rgba(14,124,123,0.30)] transition-transform hover:-translate-y-0.5"
+              className="flex w-max items-center gap-2.5 rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[26px] py-[13px] font-display text-[17px] font-semibold text-white shadow-[0_8px_20px_rgba(27,116,183,0.30)] transition-transform hover:-translate-y-0.5"
             >
               <Phone className="h-[17px] w-[17px]" strokeWidth={2.2} />
               +91 {site.phoneDisplay}
             </a>
             <p className="text-sm leading-[1.65] text-body">
-              Need a nurse, ambulance or medical equipment urgently? Call us any time — day or
-              night — and our care team will respond immediately.
+              Speak directly with our care team — any time of day, any day of the year.
             </p>
           </div>
         </div>
@@ -200,8 +196,8 @@ export default function Home() {
             <h2 className="font-display text-[clamp(26px,4.5vw,34px)] font-semibold text-navy">
               Patient's Testimonials
             </h2>
-            <div className="flex flex-col gap-4 rounded-[18px] border border-line bg-white p-8 px-[34px] shadow-[0_16px_40px_rgba(20,53,92,0.10)] max-sm:p-6">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="#BFE3E2" aria-hidden="true">
+            <div className="flex flex-col gap-4 rounded-[18px] border border-line bg-white p-8 px-[34px] shadow-[0_16px_40px_rgba(20,51,102,0.10)] max-sm:p-6">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="#C0E0F5" aria-hidden="true">
                 <path d="M11 7H7a4 4 0 0 0-4 4v6h6v-6H6a2 2 0 0 1 2-2h3zm10 0h-4a4 4 0 0 0-4 4v6h6v-6h-3a2 2 0 0 1 2-2h3z" />
               </svg>
               <div key={active} className="co-fade-up flex flex-col gap-3.5">
@@ -265,8 +261,8 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal delay={120} className="relative">
-            <div className="absolute -bottom-[46px] -right-[46px] h-[300px] w-[300px] rounded-full bg-[linear-gradient(200deg,#2AA7A5,#0E7C7B)] opacity-[.16]" />
-            <div className="relative h-[400px] w-full overflow-hidden rounded-[24px_130px_24px_24px] shadow-[0_22px_48px_rgba(20,53,92,0.16)] max-sm:h-[280px] max-sm:rounded-[20px_80px_20px_20px]">
+            <div className="absolute -bottom-[46px] -right-[46px] h-[300px] w-[300px] rounded-full bg-[linear-gradient(200deg,#3FA0D8,#1B74B7)] opacity-[.16]" />
+            <div className="relative h-[400px] w-full overflow-hidden rounded-[24px_130px_24px_24px] shadow-[0_22px_48px_rgba(20,51,102,0.16)] max-sm:h-[280px] max-sm:rounded-[20px_80px_20px_20px]">
               <img
                 src="/images/testimonial-home.avif"
                 alt="A caring moment between a CareOne nurse and patient"
@@ -295,13 +291,13 @@ export default function Home() {
                 <Reveal
                   key={item.name}
                   delay={i * 110}
-                  className="group relative flex flex-col gap-[13px] overflow-hidden rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,53,92,0.06)] transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-pale hover:shadow-[0_20px_44px_rgba(14,124,123,0.16)]"
+                  className="group relative flex flex-col gap-[13px] overflow-hidden rounded-2xl border border-line bg-white p-[30px] px-7 shadow-[0_10px_26px_rgba(20,51,102,0.06)] transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-pale hover:shadow-[0_20px_44px_rgba(27,116,183,0.16)]"
                 >
                   {/* Top accent bar sweeps in on hover */}
-                  <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] transition-transform duration-500 group-hover:scale-x-100" />
+                  <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] transition-transform duration-500 group-hover:scale-x-100" />
                   {/* Decorative corner circle */}
                   <span className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-mint transition-transform duration-500 group-hover:scale-[1.35]" />
-                  <span className="relative flex h-[54px] w-[54px] items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#0E7C7B,#2AA7A5)] text-white shadow-[0_8px_18px_rgba(14,124,123,0.28)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110">
+                  <span className="relative flex h-[54px] w-[54px] items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#1B74B7,#3FA0D8)] text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110">
                     <Icon className="h-6 w-6" strokeWidth={2} />
                   </span>
                   <span className="relative font-display text-[17px] font-semibold text-navy">

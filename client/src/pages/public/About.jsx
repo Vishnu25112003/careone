@@ -85,7 +85,7 @@ export default function About() {
           onError={(e) => (e.currentTarget.style.display = "none")}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(20,53,92,0.92),rgba(15,40,70,0.88))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(20,51,102,0.92),rgba(14,38,81,0.88))]" />
         <Container className="relative">
           <Reveal>
             <h2 className="mb-10 font-display text-[clamp(26px,4.5vw,34px)] font-semibold max-sm:mb-7">
@@ -99,7 +99,7 @@ export default function About() {
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
                     aria-expanded={openFaq === i}
-                    className="flex cursor-pointer items-center justify-between gap-3.5 rounded bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-[22px] py-4 text-left transition-[filter] hover:brightness-[1.08]"
+                    className="flex cursor-pointer items-center justify-between gap-3.5 rounded bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[22px] py-4 text-left transition-[filter] hover:brightness-[1.08]"
                   >
                     <span className="font-display text-[15.5px] font-medium text-white">
                       {faq.q}
@@ -156,7 +156,7 @@ export default function About() {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-[22px]">
           {team.map((member) => (
             <div key={member.role} className="flex flex-col items-center gap-3">
-              <div className="h-[260px] w-full overflow-hidden rounded-2xl bg-field shadow-[0_10px_26px_rgba(20,53,92,0.08)]">
+              <div className="h-[260px] w-full overflow-hidden rounded-2xl bg-field shadow-[0_10px_26px_rgba(20,51,102,0.08)]">
                 <ImagePlaceholder />
               </div>
               <span className="font-display text-[15.5px] font-semibold text-navy">

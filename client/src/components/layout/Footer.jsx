@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "../ui/Logo";
-import { site, telHref, waHref } from "../../data/site";
+import { site, telHref, waHref, mailHref } from "../../data/site";
 
 const links = [
   { to: "/", label: "Home" },
@@ -45,6 +45,12 @@ export default function Footer() {
               className="font-bold text-teal hover:text-navy"
             >
               Chat with us
+            </a>
+          </div>
+          <div>
+            <span className="font-extrabold text-ink">Email:</span>{" "}
+            <a href={mailHref} className="font-bold text-teal hover:text-navy">
+              {site.email}
             </a>
           </div>
           <div>

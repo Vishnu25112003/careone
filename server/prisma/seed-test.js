@@ -29,11 +29,11 @@ if (existingAdmin) {
 }
 
 const dummyImages = [
-  { title: "Elder care at home", category: "Elder Care" },
+  { title: "Supportive care at home", category: "Supportive Management" },
   { title: "Post-surgery recovery support", category: "Nursing Care" },
   { title: "Physiotherapy session", category: "Physiotherapy" },
   { title: "Mother and baby care", category: "Mother & Baby Care" },
-  { title: "Companionship visit", category: "Elder Care" },
+  { title: "Companionship visit", category: "Supportive Management" },
   { title: "Home nursing check-up", category: "Nursing Care" },
   { title: "Daily living assistance", category: "Care Assistance" },
   { title: "Health monitoring at home", category: "Nursing Care" },

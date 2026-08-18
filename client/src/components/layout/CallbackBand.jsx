@@ -28,7 +28,7 @@ export default function CallbackBand() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(110deg,#14355C_0%,#0E7C7B_100%)] text-white">
+    <section className="relative overflow-hidden bg-[linear-gradient(110deg,#143366_0%,#1B74B7_100%)] text-white">
       <div className="absolute -right-[100px] -top-[120px] h-[420px] w-[420px] rounded-full bg-white/[.06]" />
       <div className="relative mx-auto flex max-w-[1170px] min-[1600px]:max-w-[1380px] flex-col items-center gap-5 px-6 py-[clamp(48px,6vw,64px)] text-center">
         <span className="font-display text-[clamp(20px,4vw,26px)] font-semibold">
@@ -54,7 +54,7 @@ export default function CallbackBand() {
               <button
                 onClick={submit}
                 disabled={submitting}
-                className="cursor-pointer whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#2AA7A5,#7FD1CB)] px-[30px] py-3.5 font-display text-sm font-semibold text-navy transition-transform hover:-translate-y-px disabled:opacity-60"
+                className="cursor-pointer whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#3FA0D8,#8DCCEB)] px-[30px] py-3.5 font-display text-sm font-semibold text-navy transition-transform hover:-translate-y-px disabled:opacity-60"
               >
                 {submitting ? "Sending…" : "Request Callback"}
               </button>

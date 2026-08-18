@@ -27,7 +27,7 @@ export default function Loader() {
         </span>
       </div>
       <div className="h-[3px] w-[140px] overflow-hidden rounded-full bg-line-2">
-        <div className="h-full w-1/3 bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] [animation:co-loader-bar_1.1s_ease-in-out_infinite]" />
+        <div className="h-full w-1/3 bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] [animation:co-loader-bar_1.1s_ease-in-out_infinite]" />
       </div>
     </div>
   );

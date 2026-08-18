@@ -29,7 +29,7 @@ model Request {
   id        Int           @id @default(autoincrement())
   name      String
   phone     String
-  service   String // one of 5 categories or "Other"
+  service   String // one of the 7 departments, "Not sure — need guidance" or "Other"
   message   String?
   type      RequestType   @default(ENQUIRY)
   status    RequestStatus @default(NEW)

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const variants = {
   primary:
-    "bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] text-white shadow-[0_8px_18px_rgba(14,124,123,0.28)] hover:-translate-y-0.5",
+    "bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)] hover:-translate-y-0.5",
   outline:
     "bg-white text-navy border-[1.5px] border-[#D7E4EA] hover:border-teal hover:text-teal",
 };

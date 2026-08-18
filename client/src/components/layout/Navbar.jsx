@@ -18,7 +18,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/[.97] shadow-[0_1px_10px_rgba(20,53,92,0.07)] backdrop-blur-[10px]">
+    <header className="sticky top-0 z-50 bg-white/[.97] shadow-[0_1px_10px_rgba(20,51,102,0.07)] backdrop-blur-[10px]">
       <div className="mx-auto flex max-w-[1170px] min-[1600px]:max-w-[1380px] items-center justify-between gap-5 px-6 py-3.5">
         <Link to="/" onClick={() => setOpen(false)}>
           <Logo />
@@ -41,7 +41,7 @@ export default function Navbar() {
           <Link
             to="/contact"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2 whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] px-[22px] py-[11px] font-display text-[13.5px] font-medium text-white shadow-[0_6px_16px_rgba(14,124,123,0.30)] transition-transform hover:-translate-y-px"
+            className="flex items-center gap-2 whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[22px] py-[11px] font-display text-[13.5px] font-medium text-white shadow-[0_6px_16px_rgba(27,116,183,0.30)] transition-transform hover:-translate-y-px"
           >
             <Phone className="h-3.5 w-3.5" strokeWidth={2.2} />
             <span className="max-[479px]:hidden">{site.phoneDisplay}</span>
@@ -58,7 +58,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="flex flex-col gap-0.5 border-t border-line bg-white px-6 pb-[18px] pt-2.5 font-display text-[15px] font-medium shadow-[0_14px_28px_rgba(20,53,92,0.10)] nav:hidden">
+        <nav className="flex flex-col gap-0.5 border-t border-line bg-white px-6 pb-[18px] pt-2.5 font-display text-[15px] font-medium shadow-[0_14px_28px_rgba(20,51,102,0.10)] nav:hidden">
           {links.map((l, i) => (
             <NavLink
               key={l.to}

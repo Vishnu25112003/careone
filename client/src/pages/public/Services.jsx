@@ -25,9 +25,9 @@ export default function Services() {
             care plan around each patient's condition and routine.
           </p>
           <p className="text-[15.5px] leading-[1.8] text-body">
-            From daily elder care to ICU-standard tracheostomy support, our team brings the right
-            skills to your home — with honest pricing and dependable, consistent service, 24 hours
-            a day.
+            From daily supportive management to ICU-standard tracheostomy support, our team brings
+            the right skills to your home — with honest pricing and dependable, consistent service,
+            24 hours a day.
           </p>
         </div>
         <Button to="/contact" className="mt-8">
@@ -49,7 +49,7 @@ export default function Services() {
               onClick={() => setTab(i)}
               className={`flex-none cursor-pointer whitespace-nowrap border border-line-2 px-6 py-[13px] font-display text-sm font-medium transition-all duration-300 hover:border-teal ${
                 i === tab
-                  ? "bg-[linear-gradient(90deg,#0E7C7B,#2AA7A5)] text-white shadow-[0_8px_18px_rgba(14,124,123,0.28)]"
+                  ? "bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)]"
                   : "bg-field text-ink hover:-translate-y-0.5"
               }`}
             >
@@ -61,7 +61,7 @@ export default function Services() {
           key={active.slug}
           className="mt-[34px] grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-start gap-11"
         >
-          <div className="co-fade-up h-[280px] w-full overflow-hidden shadow-[0_14px_34px_rgba(20,53,92,0.12)]">
+          <div className="co-fade-up h-[280px] w-full overflow-hidden shadow-[0_14px_34px_rgba(20,51,102,0.12)]">
             <img src={active.image} alt={active.name} className="h-full w-full object-cover" />
           </div>
           <div
