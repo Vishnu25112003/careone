@@ -49,7 +49,7 @@ export const departments = [
   },
   {
     slug: "post-operative-care",
-    image: "/images/services/Post Operative Care.jpg",
+    image: "/images/services/Post Operative Care.webp",
     name: "Post Operative Care",
     icon: Syringe,
     short: "Monitored recovery after surgery, without hospital stays.",
