@@ -13,8 +13,7 @@ import {
 export const departments = [
   {
     slug: "supportive-management",
-    // Photo is still named for the department's old title; the picture itself fits.
-    image: "/images/services/elder-care.avif",
+    image: "/images/services/Supportive Management.webp",
     name: "Supportive Management",
     icon: Heart,
     short: "Coordinated day-to-day support and care management for patients at home.",
@@ -23,7 +22,7 @@ export const departments = [
   },
   {
     slug: "bedridden-patient-care",
-    image: "/images/services/bedridden-patient-care.jpg",
+    image: "/images/services/Bedridden Patient Care.webp",
     name: "Bedridden Patient Care",
     icon: BedSingle,
     short: "Hygienic, round-the-clock care for patients confined to bed.",
@@ -32,7 +31,7 @@ export const departments = [
   },
   {
     slug: "stroke-patient-care",
-    image: "/images/services/stroke-patient-care.webp",
+    image: "/images/services/Stroke Patient Care.avif",
     name: "Stroke Patient Care",
     icon: Activity,
     short: "Rehab support and monitoring for steady recovery at home.",
@@ -41,7 +40,7 @@ export const departments = [
   },
   {
     slug: "tracheostomy-patient-care",
-    image: "/images/services/tracheostomy-patient-care.jpg",
+    image: "/images/services/Tracheostomy Patient Care.png",
     name: "Tracheostomy Patient Care",
     icon: Wind,
     short: "ICU-standard airway care with strict hygiene protocols.",
@@ -50,7 +49,7 @@ export const departments = [
   },
   {
     slug: "post-operative-care",
-    image: "/images/services/post-operative-care.avif",
+    image: "/images/services/Post Operative Care.jpg",
     name: "Post Operative Care",
     icon: Syringe,
     short: "Monitored recovery after surgery, without hospital stays.",
@@ -68,7 +67,7 @@ export const departments = [
   },
   {
     slug: "palliative-care",
-    image: "/images/services/palliative-care.jpg",
+    image: "/images/services/Palliative Care.webp",
     name: "Palliative Care",
     icon: HeartPulse,
     short: "Comfort-focused care for serious illness, with dignity.",
