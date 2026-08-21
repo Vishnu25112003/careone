@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Mail } from "lucide-react";
 import Logo from "../ui/Logo";
 import { site, telHref, waHref, mailHref } from "../../data/site";
 
@@ -34,6 +35,13 @@ export default function Footer() {
             <span className="font-extrabold text-ink">Phone:</span>{" "}
             <a href={telHref} className="font-bold text-teal hover:text-navy">
               +91 {site.phoneDisplay}
+            </a>
+            <a
+              href={mailHref}
+              className="mt-1.5 flex w-max items-center gap-1.5 rounded-full border border-teal px-3 py-1 text-[12.5px] font-bold text-teal transition-colors hover:bg-teal hover:text-white"
+            >
+              <Mail className="h-3.5 w-3.5" strokeWidth={2.2} />
+              Email Instead
             </a>
           </div>
           <div>

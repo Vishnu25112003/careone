@@ -1,4 +1,4 @@
-import { Phone } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import Container from "../../components/layout/Container";
 import PageBanner from "../../components/ui/PageBanner";
 import EnquiryForm from "../../components/forms/EnquiryForm";
@@ -29,6 +29,13 @@ export default function Contact() {
                 <br />
                 <a href={telHref} className="font-bold text-teal">
                   +91 {site.phoneDisplay}
+                </a>
+                <a
+                  href={mailHref}
+                  className="mt-1.5 flex w-max items-center gap-1.5 rounded-full border border-teal px-3 py-1 text-[12.5px] font-bold text-teal transition-colors hover:bg-teal hover:text-white"
+                >
+                  <Mail className="h-3.5 w-3.5" strokeWidth={2.2} />
+                  Email Instead
                 </a>
               </div>
               <div>
@@ -77,13 +84,22 @@ export default function Contact() {
             <span className="font-display text-[17px] font-semibold text-navy">
               Care services available at this number
             </span>
-            <a
-              href={telHref}
-              className="flex w-max items-center gap-[9px] rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[22px] py-3 font-display text-[15.5px] font-semibold text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)] transition-transform hover:-translate-y-px"
-            >
-              <Phone className="h-[15px] w-[15px]" strokeWidth={2.2} />
-              +91 {site.phoneDisplay}
-            </a>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <a
+                href={telHref}
+                className="flex w-max items-center gap-[9px] rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[22px] py-3 font-display text-[15.5px] font-semibold text-white shadow-[0_8px_18px_rgba(27,116,183,0.28)] transition-transform hover:-translate-y-px"
+              >
+                <Phone className="h-[15px] w-[15px]" strokeWidth={2.2} />
+                +91 {site.phoneDisplay}
+              </a>
+              <a
+                href={mailHref}
+                className="flex w-max items-center gap-[9px] rounded-full border-[1.5px] border-teal bg-white px-[18px] py-[10px] font-display text-sm font-semibold text-teal transition-all hover:-translate-y-px hover:bg-teal hover:text-white"
+              >
+                <Mail className="h-[15px] w-[15px]" strokeWidth={2.2} />
+                Email Us
+              </a>
+            </div>
             <p className="text-[13.5px] leading-[1.65] text-body">
               Speak directly with our care team — any time of day, any day of the year.
             </p>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Check, CheckCircle2, X } from "lucide-react";
+import { Check, CheckCircle2, X, Mail } from "lucide-react";
 import { api } from "../../lib/api";
 import { enquiryServiceOptions } from "../../data/services";
-import { site } from "../../data/site";
+import { site, mailHref } from "../../data/site";
 
 const initial = { name: "", phone: "", service: "", message: "" };
 
@@ -112,6 +112,13 @@ export default function EnquiryForm() {
             <span className="text-sm text-[#54617A]">
               Our team will call you back shortly. For urgent care, call {site.phoneDisplay}.
             </span>
+            <a
+              href={mailHref}
+              className="mt-1 flex w-max items-center gap-1.5 rounded-full border border-teal px-3 py-1 text-[12.5px] font-bold text-teal transition-colors hover:bg-teal hover:text-white"
+            >
+              <Mail className="h-3.5 w-3.5" strokeWidth={2.2} />
+              Email Instead
+            </a>
           </div>
         </div>
       ) : (

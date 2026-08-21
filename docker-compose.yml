@@ -1,0 +1,123 @@
+# CareOne production stack.
+#
+# Every service is isolated to this compose project: its own network, its own
+# volume, its own container names. Removing CareOne from the VPS is
+# `docker compose down` plus deleting one vhost file from the edge proxy.
+#
+# Nothing here binds a public port. The edge proxy that already owns 80/443 on
+# the VPS reaches the `web` container over the shared external network below.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: careone-postgres
+    restart: always
+    env_file:
+      - ./server/.env
+    # Bound to 127.0.0.1 only — the database is never reachable from the
+    # internet. Host port 5434 because 5432 and 5433 are already taken by the
+    # other projects on this VPS.
+    ports:
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - careone-net
+    healthcheck:
+      # $$ escapes the $ so compose passes it through to the shell rather than
+      # interpolating it here.
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: careone-api
+    restart: always
+    env_file:
+      - ./server/.env
+    # DATABASE_URL is deliberately NOT set here. server/docker-entrypoint.sh
+    # rebuilds it from POSTGRES_USER/PASSWORD/DB and forces the host to
+    # `postgres`, so a 127.0.0.1:5434 value used for local work in
+    # server/.env cannot leak into the container.
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3003:5000"
+    networks:
+      - careone-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      # Migrations and the admin seed run before the server listens; give a
+      # cold start room before failures start counting.
+      start_period: 40s
+
+  web:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        # Compiled into the bundle. Relative, so the browser calls the API on
+        # the same origin as the site and CORS never enters into it.
+        # Changing this needs a rebuild, not a restart.
+        VITE_API_URL: /api
+    container_name: careone-web
+    restart: always
+    # Debug/loopback only. Public traffic arrives from the edge proxy over
+    # edge-net, not through this port.
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    # service_started, not service_healthy: nginx should serve the static site
+    # even while the API is still migrating, so a slow start shows a working
+    # page with failing API calls rather than a connection refused.
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      careone-net:
+      edge-net:
+        # An explicit alias, because the edge network already hosts another
+        # compose project whose service is literally named `nginx`/`web`.
+        # Sharing an alias would make Docker DNS round-robin between two
+        # unrelated containers. `careone-web` is unique; the edge vhost
+        # proxy_passes to exactly this name.
+        aliases:
+          - careone-web
+
+networks:
+  careone-net:
+    driver: bridge
+  # The network the existing edge nginx is already attached to.
+  #
+  # On this VPS the edge is `nammaguide-nginx` — the container publishing
+  # 0.0.0.0:80 and 0.0.0.0:443. It is NOT `c2k-nginx`, which was demoted to
+  # 8081/8443 and now sits behind the edge itself.
+  #
+  # Compose prefixes network names with the project directory, so the network
+  # declared as `nammaguide-net` in /var/www/nammaguide/docker-compose.yml is
+  # `nammaguide_nammaguide-net` on disk. Verified with:
+  #
+  #   docker inspect nammaguide-nginx \
+  #     --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}{{"\n"}}{{end}}'
+  #
+  # Re-check this after any NammaGuide redeploy that renames its project or its
+  # network — CareOne's `web` container will refuse to start if it is wrong.
+  #
+  # For a purely local run (no edge proxy present), comment out this network
+  # and the `edge-net:` entry under the `web` service.
+  edge-net:
+    external: true
+    name: nammaguide_nammaguide-net
+
+volumes:
+  postgres_data:

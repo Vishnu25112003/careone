@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Stethoscope, HeartPulse, ArrowRight } from "lucide-react";
+import { Phone, Mail, Stethoscope, HeartPulse, ArrowRight } from "lucide-react";
 import Container from "../../components/layout/Container";
 import DepartmentsPanel from "../../components/ui/DepartmentsPanel";
 import Reveal from "../../components/ui/Reveal";
 import AppointmentForm from "../../components/forms/AppointmentForm";
-import { site, telHref } from "../../data/site";
+import { site, telHref, mailHref } from "../../data/site";
 import { homeDepartments } from "../../data/services";
 
 const cardCls =
@@ -161,13 +161,22 @@ export default function Home() {
             <span className="font-display text-lg font-semibold text-navy">
               Care services available at this number
             </span>
-            <a
-              href={telHref}
-              className="flex w-max items-center gap-2.5 rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[26px] py-[13px] font-display text-[17px] font-semibold text-white shadow-[0_8px_20px_rgba(27,116,183,0.30)] transition-transform hover:-translate-y-0.5"
-            >
-              <Phone className="h-[17px] w-[17px]" strokeWidth={2.2} />
-              +91 {site.phoneDisplay}
-            </a>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <a
+                href={telHref}
+                className="flex w-max items-center gap-2.5 rounded-full bg-[linear-gradient(90deg,#1B74B7,#3FA0D8)] px-[26px] py-[13px] font-display text-[17px] font-semibold text-white shadow-[0_8px_20px_rgba(27,116,183,0.30)] transition-transform hover:-translate-y-0.5"
+              >
+                <Phone className="h-[17px] w-[17px]" strokeWidth={2.2} />
+                +91 {site.phoneDisplay}
+              </a>
+              <a
+                href={mailHref}
+                className="flex w-max items-center gap-2.5 rounded-full border-[1.5px] border-teal bg-white px-[22px] py-[11px] font-display text-[15px] font-semibold text-teal transition-all hover:-translate-y-0.5 hover:bg-teal hover:text-white"
+              >
+                <Mail className="h-4 w-4" strokeWidth={2.2} />
+                Email Us
+              </a>
+            </div>
             <p className="text-sm leading-[1.65] text-body">
               Speak directly with our care team — any time of day, any day of the year.
             </p>

@@ -1,0 +1,18 @@
+node_modules
+dist
+
+# All env files are excluded on purpose. Inside the image the ONLY source of
+# VITE_API_URL is the build ARG in the Dockerfile, so what the bundle points at
+# is decided in docker-compose.yml and nowhere else. (Left in place, a tracked
+# .env.production would silently win over the ARG during `vite build`.)
+.env
+.env.*
+
+.git
+.gitignore
+Dockerfile
+.dockerignore
+*.md
+.vscode
+.idea
+.DS_Store

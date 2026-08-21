@@ -8,8 +8,11 @@ import { notFoundHandler, errorHandler } from "./middleware/error.middleware.js"
 
 const app = express();
 
-// Required when hosted behind a reverse proxy (Render, Railway, etc.) so the
-// rate limiter sees each visitor's real IP instead of the proxy's.
+// Required when hosted behind a reverse proxy so the rate limiter sees each
+// visitor's real IP instead of the proxy's. A value of 1 means "read the
+// rightmost X-Forwarded-For entry", so every proxy in front of this app must
+// forward the visitor's address as that last entry rather than appending its
+// own. See docs/HOSTING.md, "Forwarded headers are passed through".
 app.set("trust proxy", 1);
 
 // CLIENT_ORIGIN accepts a comma-separated list, e.g.

@@ -44,6 +44,15 @@ npm run dev               # http://localhost:5173
 - Seeded credentials: username `admin`, password from `ADMIN_SEED_PASSWORD` in `server/.env`
   (temporary — change after first login).
 
+## Deployment
+
+Production runs as a Docker stack on a Hostinger VPS behind a shared nginx edge.
+
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** — step-by-step first-time setup
+- **[HOSTING.md](./HOSTING.md)** — how the running server works, and the operations runbook
+
+Deploys are automatic: pushing to `main` triggers `.github/workflows/deploy.yml`.
+
 ## Pending items (per plan §14)
 
 | Item | Needed at | Until then |

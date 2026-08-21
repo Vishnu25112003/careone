@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Phone, Menu } from "lucide-react";
+import { Phone, Mail, Menu } from "lucide-react";
 import Logo from "../ui/Logo";
-import { site } from "../../data/site";
+import { site, mailHref } from "../../data/site";
 
 const links = [
   { to: "/", label: "Home" },
@@ -46,6 +46,14 @@ export default function Navbar() {
             <Phone className="h-3.5 w-3.5" strokeWidth={2.2} />
             <span className="max-[479px]:hidden">{site.phoneDisplay}</span>
           </Link>
+          <a
+            href={mailHref}
+            title={`Email us at ${site.email}`}
+            aria-label={`Email us at ${site.email}`}
+            className="flex h-[42px] w-[42px] items-center justify-center rounded-full border-[1.5px] border-[#D7E4EA] bg-white text-teal transition-colors hover:border-teal hover:bg-teal hover:text-white"
+          >
+            <Mail className="h-[18px] w-[18px]" strokeWidth={2.2} />
+          </a>
           <button
             className="flex h-[42px] w-[42px] items-center justify-center rounded-[10px] border-[1.5px] border-[#D7E4EA] bg-white text-navy nav:hidden"
             onClick={() => setOpen((v) => !v)}

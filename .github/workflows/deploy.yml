@@ -1,0 +1,182 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  # Lets you re-run a deploy from the Actions tab without pushing a commit.
+  workflow_dispatch:
+
+# If two pushes land close together, let the first finish. Two concurrent
+# `git pull` + `docker build` runs in the same directory corrupt each other.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      # Single source of truth for the reachability gate and the deploy step,
+      # so the two can never end up dialing different ports.
+      VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # appleboy/ssh-action makes exactly ONE TCP connect attempt. If that
+      # single SYN is dropped the deploy dies with "dial tcp <host>:22: i/o
+      # timeout" before a line of the script runs, even though the VPS is up
+      # and serving traffic. Gate on real reachability first, so a transient
+      # drop costs a retry rather than the whole deploy.
+      - name: Wait for SSH port to be reachable
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          for i in $(seq 1 12); do
+            if timeout 10 bash -c "cat < /dev/null > /dev/tcp/$VPS_HOST/$VPS_PORT" 2>/dev/null; then
+              echo "SSH port reachable on attempt $i."
+              exit 0
+            fi
+            echo "Attempt $i/12: port $VPS_PORT unreachable, retrying in 15s..."
+            if [ "$i" -lt 12 ]; then sleep 15; fi
+          done
+          echo "ERROR: SSH port $VPS_PORT stayed unreachable for ~5 minutes."
+          echo "A timeout (rather than a refusal) means packets are being DROPPED"
+          echo "by a firewall -- sshd itself is fine. GitHub runners get a fresh IP"
+          echo "each run, so a per-IP ban or an allowlist shows up as exactly this."
+          echo "Check on the VPS:"
+          echo "  sudo fail2ban-client status sshd   # is the runner IP banned?"
+          echo "  sudo ufw status numbered           # host firewall rules"
+          echo "  Hostinger hPanel -> VPS -> Firewall"
+          exit 1
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ env.VPS_PORT }}
+          # Connection (not command) timeout. The 30s default is tight enough
+          # that a briefly congested link reads as a hard failure.
+          timeout: 60s
+          command_timeout: 20m
+          script: |
+            set -e
+            cd /var/www/careone
+
+            echo ">>> Preserving .env before pull..."
+            # server/.env is gitignored, but a stray git restore/clean could
+            # still wipe it. Copy it out, then put it back after the pull.
+            ENV_BACKUP_DIR="$(mktemp -d)"
+            [ -f server/.env ] && cp server/.env "$ENV_BACKUP_DIR/server.env"
+
+            echo ">>> Pulling latest code..."
+            git fetch origin main
+            git pull --ff-only origin main
+
+            [ -f "$ENV_BACKUP_DIR/server.env" ] && cp "$ENV_BACKUP_DIR/server.env" server/.env
+            rm -rf "$ENV_BACKUP_DIR"
+
+            # No npm install / npm run build here. Both the API and the client
+            # are built inside Docker, so this VPS needs no Node.js at all and
+            # there is no dist/ in git to reconcile before the pull.
+
+            # server/docker-entrypoint.sh runs `prisma migrate deploy` on every
+            # container start, so this dump is the ONLY thing protecting the
+            # data from a bad migration. It is therefore mandatory: if a
+            # verified dump cannot be produced, the deploy aborts BEFORE the
+            # API restarts.
+            echo ">>> Backing up database before migration/restart..."
+            mkdir -p backups
+
+            # Bring postgres up on its own first, so a stopped database can't
+            # mean the backup is silently skipped and migrations then run
+            # unprotected.
+            docker compose up -d postgres
+            echo ">>> Waiting for postgres to report healthy..."
+            PG_HEALTH="unknown"
+            for i in $(seq 1 30); do
+              PG_HEALTH=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' careone-postgres 2>/dev/null || echo "unknown")
+              [ "$PG_HEALTH" = "healthy" ] && break
+              echo "Attempt $i/30: postgres is '$PG_HEALTH', waiting..."
+              sleep 2
+            done
+            if [ "$PG_HEALTH" != "healthy" ]; then
+              echo "ERROR: postgres did not become healthy (state: $PG_HEALTH)."
+              echo "Refusing to restart the API, because migrations would run without a backup."
+              docker compose logs --tail=50 postgres || true
+              exit 1
+            fi
+
+            # Dump to a temp file first, so a failed or partial dump can never
+            # be mistaken for a good backup sitting in backups/.
+            BACKUP_TMP="$(mktemp)"
+            if ! docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > "$BACKUP_TMP"; then
+              echo "ERROR: pg_dump failed. Aborting before any migration runs."
+              rm -f "$BACKUP_TMP"
+              exit 1
+            fi
+            # pg_dump terminates a complete plain-text dump with this marker, so
+            # its presence distinguishes a full dump from a truncated one.
+            if ! tail -5 "$BACKUP_TMP" | grep -q "PostgreSQL database dump complete"; then
+              echo "ERROR: dump is truncated - completion marker missing. Aborting."
+              echo "Dump size: $(wc -c < "$BACKUP_TMP") bytes"
+              rm -f "$BACKUP_TMP"
+              exit 1
+            fi
+            BACKUP_FILE="backups/pre_deploy_$(date +%Y%m%d_%H%M%S).sql"
+            mv "$BACKUP_TMP" "$BACKUP_FILE"
+            chmod 600 "$BACKUP_FILE"
+            echo "Backup verified: $BACKUP_FILE ($(wc -c < "$BACKUP_FILE") bytes)"
+
+            # Unbounded backups/ growth eventually fills the disk, which takes
+            # postgres down with it. Keep the 10 most recent pre-deploy dumps.
+            ls -1t backups/pre_deploy_*.sql 2>/dev/null | tail -n +11 | xargs -r rm -f
+
+            echo ">>> Rebuilding and restarting the API (migrations run on startup)..."
+            docker compose up -d --build api
+
+            echo ">>> Waiting for the API to report healthy..."
+            HEALTH="unknown"
+            for i in $(seq 1 24); do
+              HEALTH=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' careone-api 2>/dev/null || echo "unknown")
+              if [ "$HEALTH" = "healthy" ]; then
+                echo "API is healthy."
+                break
+              fi
+              if [ "$HEALTH" = "none" ]; then
+                echo "No healthcheck defined; falling back to container state."
+                HEALTH=$(docker inspect --format '{{.State.Status}}' careone-api 2>/dev/null || echo "unknown")
+                [ "$HEALTH" = "running" ] && break
+              fi
+              echo "Attempt $i/24: API is '$HEALTH', waiting..."
+              sleep 5
+            done
+
+            if [ "$HEALTH" != "healthy" ] && [ "$HEALTH" != "running" ]; then
+              echo "ERROR: the API failed to come up (state: $HEALTH)."
+              echo "----- last 50 lines of API logs -----"
+              docker compose logs --tail=50 api || true
+              echo "The new frontend was NOT published; the previous build is still being served."
+              echo "Database backup for this deploy: $BACKUP_FILE"
+              exit 1
+            fi
+
+            # Deliberately AFTER the health gate. Publishing the new frontend
+            # earlier would point a new UI at an API that is still migrating or
+            # has already failed.
+            echo ">>> Rebuilding and restarting the frontend..."
+            docker compose up -d --build web
+            docker compose exec -T web nginx -t
+
+            # Old images from previous builds accumulate on every deploy and are
+            # a slow disk leak. Only untagged leftovers are removed.
+            docker image prune -f >/dev/null 2>&1 || true
+
+            echo ">>> All done! Deployment successful."
