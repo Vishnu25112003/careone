@@ -19,7 +19,7 @@ export default function Gallery() {
 
   return (
     <>
-      <PageBanner title="Gallery" image="/images/hero-gallery.jpg" imageAlt="CareOne moments" />
+      <PageBanner title="Gallery" image="/images/hero-gallery.png" imageAlt="CareOne moments" />
 
       <section className="pb-[clamp(48px,6vw,80px)] pt-[clamp(36px,4.5vw,56px)]">
         <Container>
