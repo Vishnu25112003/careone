@@ -129,7 +129,7 @@ export default function Home() {
             <div className="absolute -left-7 -top-6 h-[58%] w-[58%] rounded-full bg-[linear-gradient(200deg,#C0E0F5,#89C4E3)]" />
             <div className="absolute -bottom-6 -right-5 h-[54%] w-[54%] rounded-full bg-[linear-gradient(200deg,#3FA0D8,#1B74B7)]" />
             <img
-              src="/images/hero-home.jpg"
+              src="/images/hero-home.png"
               alt="CareOne nurse caring for a patient at home"
               className="relative h-full w-full rounded-full border-[6px] border-white object-cover shadow-[0_28px_60px_rgba(20,51,102,0.22)]"
             />

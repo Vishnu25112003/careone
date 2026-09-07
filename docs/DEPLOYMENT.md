@@ -846,12 +846,12 @@ Copy the whole thing, `-----BEGIN` and `-----END` lines included.
 
 **GitHub → the careone repo → Settings → Secrets and variables → Actions:**
 
-| Secret | Value |
-|---|---|
-| `VPS_HOST` | Your VPS IP |
-| `VPS_USER` | `careone` |
+| Secret        | Value                              |
+| ------------- | ---------------------------------- |
+| `VPS_HOST`    | Your VPS IP                        |
+| `VPS_USER`    | `careone`                          |
 | `VPS_SSH_KEY` | The private key from 11.2, in full |
-| `VPS_PORT` | Only if SSH is not on 22 |
+| `VPS_PORT`    | Only if SSH is not on 22           |
 
 ### 11.4 What the workflow does
 
