@@ -6,7 +6,7 @@ export const site = {
   phone: "8838562250",
   phoneDisplay: "88385 62250",
   whatsapp: "918838562250",
-  email: "care@careonenursing.in",
+  email: "careone247@gmail.com",
   domain: "careonenursing.in",
   area: "Pondicherry & Surrounding Areas",
   hours: "24/7",
